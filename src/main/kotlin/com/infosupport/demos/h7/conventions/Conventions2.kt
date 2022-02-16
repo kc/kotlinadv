@@ -73,6 +73,6 @@ fun equals1(v1: Value?, v2: Value?): Boolean {
 // Option 2
 fun equals2(v1: Value?, v2: Value?): Boolean {
     // Implementation without using '==', but equivalent.
-    return v1?.equals(v2) ?: (v2 == null) // v1 is null in ?:
+    return v1?.equals(v2) ?: (v2 == null)
 }
 

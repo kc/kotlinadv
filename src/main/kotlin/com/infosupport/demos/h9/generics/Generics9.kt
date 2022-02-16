@@ -7,8 +7,6 @@ package com.infosupport.demos.h9.generics
 // e.g. class String can be used as type String.
 
 // Generally the terms are  NOT equivalent.
-
-// But nullable types provide an example of when `type` isn’t the same as `class`.
 // E.g. one class Int creates two types: Int and Int?.
 // E.g. one class List<T> creates an infinite amount of types: List<Int>, List<String>, List<List<Double>> etc.
 
@@ -19,10 +17,12 @@ package com.infosupport.demos.h9.generics
 
 // Nullable types provide an example of when subtype isn’t the same as subclass:
 // String-|>String? but String?-|>String isn't true:
-// - ok
+
+// - ok:
 val s: String = "abc"
 val t: String? = s
-// - nok
+
+// - nok:
 // val u: String? = "null"
 // val v: String = u
 

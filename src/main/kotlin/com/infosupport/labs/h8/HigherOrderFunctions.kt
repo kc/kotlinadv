@@ -2,7 +2,7 @@ package com.infosupport.labs.h8
 
 // 1. Let’s reimplement one of the most commonly used standard library functions:
 //    the filter function. To keep things simple, you’ll implement the filter function on String,
-//    but the generic version that works on a collection of any elements is similar.
+//    but the generic version that works on a collection of any element is similar.
 //    Its declaration is shown here:
 fun String.filter(predicate: (Char) -> Boolean): String {
     TODO()

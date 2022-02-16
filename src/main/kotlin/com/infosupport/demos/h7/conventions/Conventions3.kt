@@ -15,8 +15,8 @@ fun accessByIndex() {
     println("accessByIndex ---------------")
 
     // Accessing elements by index: “get” and “set”
-    val value = map["2"]    // get
-    map["4"] = Point(4, 4)  // set
+    val value = pointMap["2"]    // get
+    pointMap["4"] = Point(4, 4)  // set
 
     // Implement "indexers" get and set for Point
     val p = Point(100, 200)

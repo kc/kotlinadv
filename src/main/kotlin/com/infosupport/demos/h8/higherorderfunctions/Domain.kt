@@ -10,7 +10,7 @@ data class SiteVisit(
 
 enum class OS { WINDOWS, LINUX, MAC, IOS, ANDROID }
 
-val log = listOf(
+val logList = listOf(
     SiteVisit("/", 34.0, OS.WINDOWS),
     SiteVisit("/", 22.0, OS.MAC),
     SiteVisit("/login", 12.0, OS.WINDOWS),

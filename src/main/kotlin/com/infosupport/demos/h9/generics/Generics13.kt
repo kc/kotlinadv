@@ -39,7 +39,7 @@ fun printFirstStarML(list: MutableList<*>) {
 }
 
 // ---------------------------------------------
-// AnOther example:
+// Another example:
 // Let’s say you need to validate user input, and you declare an interface FieldValidator.
 // It contains its type parameter in the in position only, so it can be declared as contravariant.
 
@@ -102,12 +102,14 @@ object Validators {
 }
 
 fun attempt2() {
+    // Safe, because we can only set:
     Validators.registerValidator(String::class, DefaultStringValidator)
     Validators.registerValidator(Int::class, DefaultIntValidator)
 
-    // Impossible:
+    // ... and this is impossible:
     // Validators.registerValidator(Int::class, DefaultStringValidator)
 
+    // Same for getting:
     println(Validators[String::class].validate("Kotlin"))
     println(Validators[Int::class].validate(42))
 

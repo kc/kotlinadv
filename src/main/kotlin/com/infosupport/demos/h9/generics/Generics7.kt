@@ -38,13 +38,12 @@ fun replaceClassReferenceByReifiedTypeParameters() {
     val serviceImplToo = load<Service>() // Much more concise: pass type as reified type parameter
 }
 
-internal class Service
-
-inline fun <reified T> load() =
-    ServiceLoader.load(T::class.java) // you can use T here
+inline fun <reified T> load() = ServiceLoader.load(T::class.java) // you can use T here
 
 fun main() {
     callIsA()
     filterIsInstance()
     replaceClassReferenceByReifiedTypeParameters()
 }
+
+private class Service

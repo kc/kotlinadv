@@ -2,6 +2,18 @@ package com.infosupport.demos.h8.higherorderfunctions
 
 // Declaring higher-order functions
 
+fun main() {
+    callThem()
+    callTwoAndThree()
+    callInDifferentWaysUsingDefaults()
+    callNullableLambda(action)
+    callNullableLambda(null)
+
+    printAverageDuration()
+    printAverageDurationForOs()
+    printAverageDurationForPredicate()
+}
+
 // Function types ----------------------------------------------
 val sum: (Int, Int) -> Int = { x: Int, y: Int -> x + y } // syntax
 val action: () -> Unit = { println(42) }
@@ -16,7 +28,7 @@ fun callThem() {
 }
 
 // nullable
-var canHaveNull: (Int?, Int?) -> Int = { a, b -> a?.plus(b ?: 0) ?: 0 }
+var canReceiveNull: (Int?, Int?) -> Int = { a, b -> a?.plus(b ?: 0) ?: 0 }
 var canReturnNull: (Int, Int) -> Int? = { _, _ -> null } // note the underscores
 var canBeNull: ((Int, Int) -> Int)? = null
 
@@ -38,13 +50,16 @@ fun callTwoAndThree() {
 fun callInDifferentWaysUsingDefaults() {
     val letters = listOf("Alpha", "Beta")
 
-    println(letters.joinToString(separator = "! ", postfix = "! ", transform = { it.toUpperCase() }))
-    println(letters.joinToString { it.toLowerCase() }) // only supply the last parameter, which is a lambda, others are default
+    println(letters.joinToString(separator = "! ", postfix = "! ", transform = { it.uppercase() }))
+    println(letters.joinToString { it.lowercase() }) // only supply the last parameter, which is a lambda, others are default
     println(letters.joinToString()) // all the defaults are used
 }
 
 fun callNullableLambda(callback: (() -> Unit)?) {
     // Elvis doesn't work with lambdas:
+    // callback?.()
+
+    // Instead:
     if (callback != null) {
         callback()
     }
@@ -56,57 +71,34 @@ fun callNullableLambda(callback: (() -> Unit)?) {
 // Removing duplication with a higher-order function ---------------------------
 // We want to search a log for average duration of calls.
 
-// OS is hard coded...
-val averageWindowsDuration =
-    log
-        .filter { it.os == OS.WINDOWS }
-        .map(SiteVisit::duration)
-        .average()
+// Attempt 1: filter is hard coded, not DRY
+val averageDurationWindows = logList.filter { it.os == OS.WINDOWS }.map(SiteVisit::duration).average()
+val averageDurationMac = logList.filter { it.os == OS.MAC }.map(SiteVisit::duration).average()
+val averageDurationMobile = logList.filter { it.os in setOf(OS.IOS, OS.ANDROID) }.map(SiteVisit::duration).average()
 
-fun printAverageWindowsDuration() {
-    println(averageWindowsDuration)
+fun printAverageDuration() {
+    println(averageDurationWindows)
+    println(averageDurationMac)
+    println(averageDurationMobile)
 }
 
-// parameterize the OS with a regular function, DRY
+// Attempt 2: parameterize the OS with a normal extension function, DRY
 fun List<SiteVisit>.averageDurationFor(os: OS) = filter { it.os == os }.map(SiteVisit::duration).average()
 
 fun printAverageDurationForOs() {
-    println(log.averageDurationFor(OS.WINDOWS))
-    println(log.averageDurationFor(OS.MAC))
+    println(logList.averageDurationFor(OS.WINDOWS))
+    println(logList.averageDurationFor(OS.MAC))
 }
 
-// search for more than one os (all mobiles), not DRY compared to previous
-val averageMobileDuration = log
-    .filter { it.os in setOf(OS.IOS, OS.ANDROID) }
-    .map(SiteVisit::duration)
-    .average()
-
-fun printAverageMobileDuration() {
-    println(averageMobileDuration)
-}
-
-// search on combinations of conditions with higher order functions, DRY for all situations
-fun List<SiteVisit>.averageDurationFor(predicate: (SiteVisit) -> Boolean) =
-    filter(predicate).map(SiteVisit::duration).average()
+// Attempt 3: search on combinations of conditions with higher order extension functions, DRY for all situations
+fun List<SiteVisit>.averageDurationFor(predicate: (SiteVisit) -> Boolean) = filter(predicate).map(SiteVisit::duration).average()
 
 fun printAverageDurationForPredicate() {
-    println(log.averageDurationFor { it.os == OS.WINDOWS })
-    println(log.averageDurationFor { it.os == OS.MAC })
-    println(log.averageDurationFor { it.os in setOf(OS.ANDROID, OS.IOS) })
-    println(log.averageDurationFor { it.os == OS.IOS && it.path == "/signup" })
+    println(logList.averageDurationFor { it.os == OS.WINDOWS })
+    println(logList.averageDurationFor { it.os == OS.MAC })
+    println(logList.averageDurationFor { it.os in setOf(OS.ANDROID, OS.IOS) })
+    println(logList.averageDurationFor { it.os == OS.IOS && it.path == "/signup" })
 }
 
-// -----------
 
-fun main() {
-    callThem()
-    callTwoAndThree()
-    callInDifferentWaysUsingDefaults()
-    callNullableLambda(action)
-    callNullableLambda(null)
 
-    printAverageWindowsDuration()
-    printAverageDurationForOs()
-    printAverageMobileDuration()
-    printAverageDurationForPredicate()
-}

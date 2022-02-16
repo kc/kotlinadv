@@ -10,9 +10,7 @@ import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
 data class Point(val x: Int, val y: Int) : Comparable<Point> {
-    operator fun plus(other: Point): Point {
-        return Point(x + other.x, y + other.y)
-    }
+    operator fun plus(other: Point) = Point(x + other.x, y + other.y)
 
     override fun compareTo(other: Point) = floor(vectorLength(this) - vectorLength(other)).toInt()
 
@@ -21,7 +19,7 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 
 data class MutablePoint(var x: Int, var y: Int)
 
-val map = mutableMapOf(
+val pointMap = mutableMapOf(
     "1" to Point(1, 1),
     "2" to Point(2, 2),
     "3" to Point(3, 3)

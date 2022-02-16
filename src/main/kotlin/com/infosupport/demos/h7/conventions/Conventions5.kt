@@ -5,7 +5,7 @@ import java.time.LocalDate.now
 
 // Delegated properties applications/examples
 
-// TODO show only, no implementation details yet
+// show only, no implementation details yet
 fun main() {
     summing()
     lazyLoading()

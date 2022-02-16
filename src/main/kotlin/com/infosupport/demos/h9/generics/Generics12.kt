@@ -33,7 +33,7 @@ fun <T : R, R> copyDataTwoTypeParams(
 
 // Kotlin provides a more elegant way to express this:
 fun <T> copyData2(
-    source: MutableList<out T>, // type projection; for source, we can use T in out position only; read only; allowes source elements to be a subtype of destination elements
+    source: MutableList<out T>, // type projection; for source, we can use T in out position only; read only; allows source elements to be a subtype of destination elements
     destination: MutableList<T>
 ) {
     for (item in source) {      // source produces values (out)

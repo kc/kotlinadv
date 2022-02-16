@@ -16,7 +16,7 @@ fun main() {
     println("""File "$name" has extention "$ext".""")
 
     // Using these conventions, you can iterate over a map directly:
-    for ((key, value) in map) {
+    for ((key, value) in pointMap) {
         println("$key -> $value")
     }
 }

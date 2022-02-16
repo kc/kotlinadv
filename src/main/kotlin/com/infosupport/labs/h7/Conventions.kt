@@ -7,8 +7,8 @@ package com.infosupport.labs.h7
 // 2.
 // a) Take the class Repository from 1.
 //    Implement ==, >, <, in, r1..r2 for this class such that:
-//      - two repositories are equal if they contain an equal amount of non null elements
-//      - one repository is greater than another if the sum of all its non null elements is greater
+//      - two repositories are equal if they contain an equal amount of non-null elements
+//      - one repository is greater than another if the sum of all its non-null elements is greater
 //      - i in repo checks that i is contained in repo
 //      - for(i in r1..r2) iterates over all non-null elements of first r1 and then r2
 // b) Destructure a repository in such a way that when you call val (items, nullCount) = r1,

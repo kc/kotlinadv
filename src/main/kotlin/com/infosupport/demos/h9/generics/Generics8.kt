@@ -27,7 +27,6 @@ fun addAnswer(list: MutableList<Any>) {
 fun callAddAnswer() {
     val strings = mutableListOf("abc", "bac")
     // addAnswer(strings) // doesn't compile
-    println(strings.maxByOrNull { it.length })
 
     // If this was allowed you would get:
     // ClassCastException: Integer cannot be cast to String

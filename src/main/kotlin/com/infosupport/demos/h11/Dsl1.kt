@@ -53,7 +53,7 @@ fun λWithReceiver() {
     //       moreover we can create a DSL structure now:
 }
 
-// define a λ as and argument:
+// define a λ as an argument:
 fun buildHelloString(builderAction: StringBuilder.() -> Unit): String {
     // lambda is gone here
 

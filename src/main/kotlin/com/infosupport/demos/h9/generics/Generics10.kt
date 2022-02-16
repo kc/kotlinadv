@@ -18,14 +18,13 @@ class Cat : Animal() {
     override fun spec() = "Cat"
 }
 
-// This one can produce T's.
-// Since it has output, T must be marked out and Producer is therefore covariant:
-// - Subtyping is preserved.
-// - T can be used in so called "out positions": it can produce T's but not consume T's.
+// The interface below can *produce* T's.
+// Since it has output, T must be marked `out` and Producer is therefore covariant:
+//   - Subtyping is preserved.
+//   - T can be used in so called "out positions": it can produce T's but not consume T's.
 // This protects against illegal use and runtime exceptions.
 interface Producer<out T> {
     fun produce(): T     // T is in "out position", allowed.
-
     // fun consume(t: T) // T is in "in position", not allowed.
 }
 
@@ -67,10 +66,10 @@ fun main() {
 // Using out T in constructor parameters ------------------------
 
 // Allowed, even if it looks like an "in position"
-class Herd1<out T : Animal>(vararg animals: T)
+class Herd1<out A : Animal>(vararg animals: A)
 
 // Not allowed, since leadAnimal gets a setter and therefore an "in position"
-class Herd2</*out */T : Animal>(var leadAnimal: T, vararg animals: T)
+class Herd2</*out */A : Animal>(var leadAnimal: A, vararg animals: A)
 
 // Allowed, since lead animal now is only a private field without getter/setter
-class Herd3<out T : Animal>(private var leadAnimal: T, vararg animals: T)
+class Herd3<out A : Animal>(private var leadAnimal: A, vararg animals: A)
