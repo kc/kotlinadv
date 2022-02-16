@@ -1,0 +1,8 @@
+
+Ekotlin:S1481a"(Remove this unused "job" local variable.(¯­±ûÿÿÿÿ
+_kotlin:S1192"GDefine a constant instead of duplicating this literal "World!" 6 times.(·­›–
+_kotlin:S1192"GDefine a constant instead of duplicating this literal "Hello," 6 times.(µ ­³
+qkotlin:S6306"TUsing "GlobalScope" here leads to the breaking of structured concurrency principles.(ƒŒÑãÿÿÿÿÿ
+xkotlin:S6306:"TUsing "GlobalScope" here leads to the breaking of structured concurrency principles.(š£Œúÿÿÿÿ8‘ßíí/
+xkotlin:S6306G"TUsing "GlobalScope" here leads to the breaking of structured concurrency principles.(ƒŒÑãÿÿÿÿÿ8‡¹ãíí/
+rkotlin:S6306S"TUsing "GlobalScope" here leads to the breaking of structured concurrency principles.(®ãùO8è½äíí/

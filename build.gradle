@@ -1,0 +1,55 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+}
+
+group 'com.infosupport'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+
+    // For kotlinx.html
+    maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
+
+    // For jkid when installed locally
+    // mavenLocal()
+}
+
+dependencies {
+    def coroutinesVersion = '1.5.2'
+    def kotlinx_html_version = "0.7.3"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    implementation 'org.assertj:assertj-core:3.21.0'
+
+    // Additional
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
+    implementation "org.jetbrains.kotlinx:kotlinx-html-jvm:${kotlinx_html_version}"
+
+    // External dependency - not in central/jcenter
+    // Bundled in `libs` directory
+    implementation files('libs/jkid.jar')
+    // To build new version, clone https://github.com/yole/jkid locally
+    // Or install locally and uncommend the line below
+    // implementation "ru.yole:jkid:1.0"
+
+    // include for client-side
+    // implementation("org.jetbrains.kotlinx:kotlinx-html-js:${kotlinx_html_version}")
+
+    // for coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
+}
+
+def jvmTarget = "11"
+
+compileKotlin {
+    kotlinOptions.jvmTarget = jvmTarget
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = jvmTarget
+}
+test {
+    useJUnitPlatform()
+}
