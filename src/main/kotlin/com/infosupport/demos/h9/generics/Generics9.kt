@@ -1,37 +1,70 @@
 package com.infosupport.demos.h9.generics
 
 // Variance: generics and subtyping
-// Classes v.s. types and subtypes
 
-// In simple cases, the term `type` and `class` are equivalent,
-// e.g. class String can be used as type String.
+// Why variance exists: passing an argument to a function ---------
 
-// Generally the terms are  NOT equivalent.
-// E.g. one class Int creates two types: Int and Int?.
-// E.g. one class List<T> creates an infinite amount of types: List<Int>, List<String>, List<List<Double>> etc.
+// 0) Imagine that you have a function that takes a Number as an argument.
+fun makeDouble(n: Number): Double {
+    return n.toDouble()
+}
 
-// Sub/super: B is a subtype of A if you can use it when A is expected.
-// Example https://drek4537l1klr.cloudfront.net/jemerov/Figures/09fig04.jpg
+// Q: Is it safe to pass an Int to this function?
+// A: Yes, because Int -|> Number
+val d = makeDouble(1)
 
-// In simple cases, subtype means essentially the same thing as subclass, but...
+// Other types than numbers are of course not allowed:
+// val s = makeDouble("1")
+// val s = makeDouble(Person(42))
 
-// Nullable types provide an example of when subtype isn’t the same as subclass:
-// String-|>String? but String?-|>String isn't true:
+// What happens when Number and Int become type arguments?
 
-// - ok:
-val s: String = "abc"
-val t: String? = s
+// 1) Imagine that you have a function that takes a List<Number> as an argument.
+//    It can only read from the list.
+fun processList(list: List<Number>) {
+    list.forEach { println(it) } // read from list
+    //                              write not possible on Lists
+}
 
-// - nok:
-// val u: String? = "null"
-// val v: String = u
+// Q: Is it safe to pass a List<Int> to this function?
+// A: Yes:
+val safe = processList(listOf(1, 2))
+// List<T> is said to be covariant: it preserves the subtyping relation:
+//      Int  -|>      Number
+// List<Int> -|> List<Number>
 
-// So again:
-// Q: Is it safe to pass a variable of type List<String> to a function expecting List<Any>?
-// A: Yes, so List<String> is a subtype of List<Any>.
-// List<T> is said to be covariant: it preserves subtyping relation:
-// String-|>Any and List<String> -|> List<Any>
+// 2) Imagine that you have a function that takes a MutableList<Number> as an argument.
+//    It can read from AND write to the list.
+fun processMutableList(list: MutableList<Number>) {
+    list.forEach { println(it) } // read from list
+    list.add(42f)                // write element, allowed since Float -|> Number
+}
 
-// MutableList<String> wasn't substitutable for MutableList<Any>. So it isn't a subtype.
-// Also, MutableList<Any> is not subtype of MutableList<String>, because not substitutable that way.
-// MutableList is called invariant.
+// Q: Is it safe to pass a MutableList<Int> to this function?
+// No!
+// val unsafe = processMutableList(mutableListOf<Int>(1, 2)) // doesn't compile
+
+// If this was allowed you would get a runtime error at the write action:
+//      ClassCastException: Float cannot be cast to Int
+//      Float doesn't belong in a List<String>
+// , which would break type safety of generics at compile time.
+// Same for other subtypes of Number.
+
+// Q: Is it safe to pass a MutableList<Any> to this function?
+// No!
+// val unsafe = processMutableList(mutableListOf<Any>(1, 2)) // doesn't compile
+
+// MutableList is called invariant:
+// - MutableList<Int>    isn't substitutable for MutableList<Number>
+// - MutableList<Number> isn't substitutable for MutableList<Int>
+// No subtyping relationship.
+
+// So
+// A: It is allowed, but only for List, not for MutableList.
+
+// How can we relax this a bit more, without losing safety? 
+// By making the functions co/contravariant: see 9b.
+
+
+
+

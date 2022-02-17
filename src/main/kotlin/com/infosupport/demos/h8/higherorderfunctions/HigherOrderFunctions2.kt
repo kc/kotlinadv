@@ -6,16 +6,16 @@ import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-// Inline functions
+// Inlining
 
-// TODO tell
+// 1. Concept and benefits
 fun filterPeople() {
 
     // Q: Which one performs better?
     imperativeStyle()
     functionalStyle()
 
-    // A: In Java, lambdas are slower because anonymous classes is generated,
+    // A: In Java, lambdas are slower because anonymous class is generated,
     //    for captured variables new objects are created, calls are made to
     //    these classes and objects, which introduces runtime overhead.
 
@@ -38,11 +38,11 @@ private fun functionalStyle() {
     println(people.filter { it.age < 30 })
 }
 
-// Defining and using an inline function -------------------------
+// 2. Defining and using an inline function -------------------------
 inline fun <T> synchronized(lock: Lock, action: () -> T): T {
     lock.lock()
     try {
-        return action()
+        return action() // execute lambda
     } finally {
         lock.unlock()
     }
@@ -51,13 +51,13 @@ inline fun <T> synchronized(lock: Lock, action: () -> T): T {
 fun usingSynchronized(lock: Lock) {
     // Looks just like Java
     println("Before sync")
-    synchronized(lock) {
+    synchronized(lock) {    // lambda is known at compile time, can be inlined
         println("Action")
     }
     println("After sync")
 }
 
-// this translates to this bytecode:
+//    this translates to this bytecode:
 fun pseudoByteCodeOfUsingSynchronized(lock: Lock) {
     println("Before sync")
 
@@ -72,10 +72,10 @@ fun pseudoByteCodeOfUsingSynchronized(lock: Lock) {
     println("After sync")
 }
 
-// Inlining when lambda is passed as parameter (here: body) ---------------------------
+// 3. Inlining when lambda is passed as parameter (here: body) ---------------------------
 class LockOwner(val lock: Lock) {
-    fun runUnderLock(body: () -> Unit) {
-        synchronized(lock, body) // lambda code (body) isn't available at compile time
+    fun runUnderLock(body: () -> Unit) { // higher order function
+        synchronized(lock, body)         // lambda is NOT known at compile time, can NOT be inlined!
     }
 }
 
@@ -85,20 +85,20 @@ class LockOwnerByteCode(val lock: Lock) {
         // synchronized is inlined here:
         lock.lock()             // inlined code of synchronized(...)
         try {
-            body()              // lambda can't get inlined!!
+            body()              // ... but lambda can't get inlined!!
         } finally {
             lock.unlock()
         }
     }
 }
 
-// Therefore, this code can't completely be inlined:
+//    therefore, this code can't completely be inlined:
 fun inliningCallsInASequence() =
     people.asSequence()
         .filter { it.age > 10 } // Sequence.filter is NOT declared as inline; the lambda is passed
         .toList()               // to a new object FilteringSequence(..); can't be inlined in Sequence.filter.
 
-// This code can be inlined:
+//    this code can be inlined:
 fun inliningCallsInCollectionAPI(): List<Person> {
     return people // no sequence
         .filter { it.age > 10 } // Iterable.filter is declared inline, because it executes predicate (almost) itself.
@@ -108,12 +108,13 @@ fun inliningCallsInCollectionAPI(): List<Person> {
     // a concern.
 }
 
-// Q: When to use sequence, when not?
-// A: With large collections (no inlining, but no large intermediate collections).
-//    Not with small collections, so you can benefit from inlining.
-//    and the intermediate collections are small, so no problem.
+//     Conclusion:
+//     Q: When to use sequence, when not?
+//     A: With large collections (no inlining, but no large intermediate collections).
+//        Not with small collections, so you can benefit from inlining.
+//        and the intermediate collections are small, so no problem.
 
-// Resource management -------------------------------------------------
+// 4. Inlining with resources -------------------------------------------------
 var sharedResource = 9
 
 fun synchronizedInKotlin() {
@@ -129,13 +130,14 @@ fun tryWithResourcesInKotlin(): String? {
     }
 }
 
-// Storing Inlined Parameter for future use is not allowed:
+// 5. Storing Inlined Parameter for future use is not allowed:
 inline fun inlinedFilterStoresInlinedParameter(list: List<Int>, predicate: (Int) -> Boolean): List<Int> {
     // val tryToStoreInlinedParameter = predicate // not allowed!
     return list.filter(predicate)
 }
 
-// ------------------------------------
+// 6. Conclusion ------------------------------------
+//
 // Q: When to inline, when not?
 // A: Do:
 //      - when functions that take lambdas as arguments

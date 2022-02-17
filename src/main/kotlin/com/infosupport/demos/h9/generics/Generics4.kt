@@ -3,16 +3,18 @@ package com.infosupport.demos.h9.generics
 // Declaring generic functions and classes
 // Type parameter constraints
 
+// sum() of a list: T must be the same numeric type, so
+// not allowed calls:
+// val sum1 = listOf(1.0, 2.0, 3).sum() // not the same
+// val sum2 = listOf("a", "b").sum()    // not numeric
+
+// We can fix it with a bound on T:
 // T must be a Number
 fun <T : Number> List<T>.mySum(): Int = this.sumOf { it.toInt() }
 
 // allowed calls:
-val sum1 = listOf(1, 2, 3).mySum()
-val sum2 = listOf(1.0, 2.0, 3.0).mySum()
-
-// not allowed calls:
-// val sum3 = listOf(1.0, 2.0, 3).sum()
-// val sum4 = listOf("a", "b").sum()
+val sum3 = listOf(1, 2, 3).mySum()
+val sum4 = listOf(1.0, 2.0f, 3).mySum()
 
 // ------------
 
@@ -28,9 +30,8 @@ val max = max("kotlin", "java")
 // val max = max("kotlin", 42)
 
 // ------------
-//  Specifying multiple constraints for a type parameter
-
-fun <T> ensureTrailingPeriod(seq: T) where T : CharSequence, T : Appendable {
+//  Specifying multiple constraints for a type parameter with `where`:
+fun <T> ensureTrailingPeriod(seq: T) where T : CharSequence, T : Appendable { // T must be CharSequence AND Appendable
     if (!seq.endsWith('.')) {
         seq.append('.')
     }
@@ -42,12 +43,12 @@ val hwperiod = ensureTrailingPeriod(StringBuilder("Hello World"))
 // not allowed calls:
 // val hwperiod = ensureTrailingPeriod("Hello World") // String is not appendable
 
-// BTW, you can use this syntax for one constraint too:
-fun <T> List<T>.sum2(): Int where T : Number = this.sumBy { it.toInt() }
+// BTW, you can use above syntax for one constraint too:
+fun <T> List<T>.sum2(): Int where T : Number = this.sumOf { it.toInt() }
 
 fun main() {
-    println(sum1)
-    println(sum2)
+    println(sum3)
+    println(sum4)
     println(max)
 
     println(hwperiod)

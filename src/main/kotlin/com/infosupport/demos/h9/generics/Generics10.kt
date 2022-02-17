@@ -21,7 +21,7 @@ class Cat : Animal() {
 // The interface below can *produce* T's.
 // Since it has output, T must be marked `out` and Producer is therefore covariant:
 //   - Subtyping is preserved.
-//   - T can be used in so called "out positions": it can produce T's but not consume T's.
+//   - T can be used in so-called "out positions": it can produce T's but not consume T's.
 // This protects against illegal use and runtime exceptions.
 interface Producer<out T> {
     fun produce(): T     // T is in "out position", allowed.
@@ -35,7 +35,6 @@ class SpeciesProducer : Producer<Species> {
 
 class CatProducer : Producer<Cat> {
     override fun produce() = Cat()
-
 }
 
 class StringProducer : Producer<String> {
@@ -45,7 +44,7 @@ class StringProducer : Producer<String> {
 // Expects a Producer of animal.
 // Can be any subtype of Producer<Animal>, since producer is covariant.
 fun produceAndFeedAnimal(p: Producer<Animal>) {
-    p.produce().feed()
+    p.produce().feed() // we can call feed since it produces an animal
 }
 
 fun callProduceAndFeedAnimal() {
@@ -59,10 +58,15 @@ fun callProduceAndFeedAnimal() {
     // produceAndFeedAnimal(StringProducer())
 }
 
+// So: define covariance of some class as
+//     SomeClass<out T>
+// and SomeClass can only be a producer of T's.
+
 fun main() {
     callProduceAndFeedAnimal()
 }
 
+// Additionally if time permits:
 // Using out T in constructor parameters ------------------------
 
 // Allowed, even if it looks like an "in position"

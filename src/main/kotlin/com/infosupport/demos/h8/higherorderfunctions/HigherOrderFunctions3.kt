@@ -54,8 +54,8 @@ fun lookForAliceAnonymousFunction(people: List<Person>) {
 fun labeledThis() {
     val apply = StringBuilder().apply sb@{
         listOf(1, 2, 3).apply {
-            this.forEach { println(it) }    // "inner" this: the List
-            this@sb.append(this.toString()) // "other" this: the StringBuilder
+            this.forEach { println(it) }    // "inner"-this: the List
+            this@sb.append(this.toString()) // "outer"-this: the StringBuilder
         }
     }
 }

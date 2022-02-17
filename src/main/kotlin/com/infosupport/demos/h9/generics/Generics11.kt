@@ -26,7 +26,8 @@ fun useComparator() {
 // -----------------------
 
 interface Consumer<in T> {
-    fun consume(t: T): Unit     // T is in "in position", allowed.
+    // fun produce(): T // T is in "out position", not allowed.
+    fun consume(t: T)   // T is in "in position", allowed.
 }
 
 // Some concrete Consumers:
@@ -77,6 +78,10 @@ fun callConsumeAnimal() {
 fun main() {
     callConsumeAnimal()
 }
+
+// So: define contravariance of some class as
+//     SomeClass<in T>
+// and SomeClass can only be a consumer of T's.
 
 // ------------------------------------
 // A class or interface can be covariant on one type parameter and contravariant on another.
