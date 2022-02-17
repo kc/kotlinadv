@@ -1,6 +1,6 @@
 package com.infosupport.demos.h9.generics
 
-// Variance: covariant on functions
+// Variance: covariance and contravariance on functions
 
 fun covariant(list: MutableList<out Number>) { // out = producer = read only
     list.forEach { println(it) } // read from list
@@ -19,12 +19,13 @@ fun passToCovariant() {
     covariant(mutableListOf<Number>())
     covariant(mutableListOf<Int>())
     covariant(mutableListOf<Float>())
-    //                     <etc. >
+    //                     <etc.>
 
     // NOK: the rest (supertypes and unrelated types)
     // covariant(mutableListOf<Any>())    // super type
     // covariant(mutableListOf<String>()) // unrelated type
     // covariant(mutableListOf<Person>()) // unrelated type
+    //                        <etc.>
 }
 
 fun passToContavariant() {
@@ -35,16 +36,19 @@ fun passToContavariant() {
     // NOK: the rest (subtypes and unrelated types)
     // contravariant(mutableListOf<Int>())   // otherwise it could write a float in MutableList<Int>
     // contravariant(mutableListOf<Float>()) // otherwise it could write an int  in MutableList<Float>
-    //                            <etc. >
+    //                            <etc.>
 
     // contravariant(mutableListOf<String>()) // unrelated type
     // contravariant(mutableListOf<Person>()) // unrelated type
+    //                            <etc.>
 }
 
-// So: define covariance of a parameter of some function f with `out`:
-//     f(param: SomeClass<out Number>)
+// So: you define a covariant parameter of some function f with `out`:
+//     f(param: SomeClass<out Type>)
 // The function can only read from the param.
+// As type argument you can pass Type and its subtypes.
 
-// So: define contravariance of a parameter of some function f with `in`:
+// So: you define a contravariant parameter of some function f with `in`:
 //     f(param: SomeClass<in Number>)
 // The function can read to and write from the param.
+// As type argument you can pass Type and its supertypes.
