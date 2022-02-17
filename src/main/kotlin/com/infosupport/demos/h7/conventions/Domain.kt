@@ -82,12 +82,10 @@ interface TwoOperands {
     val b: Int
 }
 
-class Sum
-
-operator fun Sum.getValue(
-    thisRef: TwoOperands,
-    property: KProperty<*>
-) = thisRef.a + thisRef.b
+class Sum {
+    // getValue convention:
+    operator fun getValue(thisRef: TwoOperands, property: KProperty<*>) = thisRef.a + thisRef.b
+}
 
 data class PersonWithLazyEmails(val name: String) {
     // lazy loading using by lazy {...}
@@ -116,31 +114,32 @@ fun loadEmails(person: PersonWithLazyEmails): List<Email> {
     )
 }
 
-class PersonWithDynamicProperties(
+class PersonFromJson(
     // a dynamic set of properties (key/value)
-    json: HashMap<String, String>
+    json: HashMap<String, String> // use (any) map here
 ) {
-    // required properties
-    val name: String by json
-    val age: String by json
+    val name: String by json // when json contains key name, this.name is get/set
+    val age: String by json  // same for age
 }
 
-// Entities (uses EntityFramework.kt)
+// Example: Entities (uses EntityFramework.kt)
 
+//  Table definitions
 object Users {
     val name = StringColumn("name")
     val age = IntColumn("age")
-}
-
-data class User(override val id: Long) : Entity(id) {
-    var name: String by Users.name
-    var age: Int by Users.age
 }
 
 object Courses {
     val name = StringColumn("name")
     val level = IntColumn("level")
     val grade = IntColumn("grade")
+}
+
+//  Entities
+data class User(override val id: Long) : Entity(id) {
+    var name: String by Users.name
+    var age: Int by Users.age
 }
 
 data class Course(override val id: Long) : Entity(id) {

@@ -1,13 +1,29 @@
 package com.infosupport.demos.h7.conventions
 
-// Overloading arithmetic operators
+// Overloading arithmetic operators + - ! ++ -- / % += -=
+// See https://kotlinlang.org/docs/operator-overloading.html
 
 fun main() {
-    binaryOperators()
     unaryOperators()
+    binaryOperators()
 }
 
-private fun binaryOperators() {
+// --------------------------------------------
+fun unaryOperators() {
+    println("unary ---------------")
+
+    var p1 = Point(1, 2)
+    var p2 = Point(-1, -2)
+
+    println(-p1)
+    println(+p2)
+    println(!p2)
+    println(++p1)
+    println(--p2)
+}
+
+// --------------------------------------------
+fun binaryOperators() {
     arithmetic()
     bitwise()
     compound()
@@ -31,7 +47,7 @@ private fun arithmetic() {
 
 }
 
-fun bitwise() {
+private fun bitwise() {
     println("bitwise ---------------")
 
     // bitwise operators are infix
@@ -42,7 +58,7 @@ fun bitwise() {
     println(Point(1, 1) shl 4)
 }
 
-fun compound() {
+private fun compound() {
     println("compound ---------------")
 
     var p = Point(1, 2)
@@ -61,22 +77,14 @@ fun compound() {
     println(newNumbers)
 }
 
-fun unaryOperators() {
-    println("unary ---------------")
+// It's common to define operators as extension functions ----------------------------
 
-    var p1 = Point(1, 2)
-    var p2 = Point(-1, -2)
-
-    println(-p1)
-    println(+p2)
-    println(!p2)
-    println(++p1)
-    println(--p2)
-}
-
-// Overloaded operators =========================
-
-// It's common to define operators as extension functions
+// Unary operators
+operator fun Point.unaryMinus() = Point(-x, -y)
+operator fun Point.unaryPlus() = Point(if (x < 0) -x else x, if (y < 0) -y else y)
+operator fun Point.not() = -this
+operator fun Point.inc() = Point(x + 1, y + 1)
+operator fun Point.dec() = Point(x - 1, y - 1)
 
 // Binary operators
 // - Arithmetic
@@ -99,12 +107,6 @@ operator fun MutablePoint.plusAssign(other: Point): Unit { // must be Unit
     y += other.y
 }
 
-// Unary operators
-operator fun Point.unaryMinus() = Point(-x, -y)
-operator fun Point.unaryPlus() = Point(if (x < 0) -x else x, if (y < 0) -y else y)
-operator fun Point.not() = -this
-operator fun Point.inc() = Point(x + 1, y + 1)
-operator fun Point.dec() = Point(x - 1, y - 1)
 
 
 

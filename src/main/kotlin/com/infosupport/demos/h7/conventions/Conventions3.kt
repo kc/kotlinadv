@@ -3,6 +3,10 @@ package com.infosupport.demos.h7.conventions
 import java.time.LocalDate
 
 // Conventions used for collections and ranges
+// - Indexed access: a[i] a[i, j] a[i, .. , n]
+// - in operator:    a in b
+// - range to:       a .. b
+// - iterator:       for(x in a .. b)
 
 fun main() {
     accessByIndex()
@@ -43,18 +47,19 @@ fun inConvention() {
 fun rangeToConvention() {
     println("rangeToConvention ---------------")
 
+    // With Int
     val intRange = 0..10 // call rangeTo
     println(2 in intRange)
-
-    // With points
-    val point = Point(2, 2)
-    val straightLine = Point(0, 0)..Point(10, 10)
-    println(point in straightLine) // Point only needs to implement Comparable
 
     // With dates
     val now = LocalDate.now()
     val vacation = now..now.plusDays(10)
     println(now.plusWeeks(1) in vacation)
+
+    // With points: Point only needs to implement Comparable
+    val point = Point(2, 2)
+    val straightLine = Point(0, 0)..Point(10, 10)
+    println(point in straightLine)
 }
 
 fun iteratorConvention() {
