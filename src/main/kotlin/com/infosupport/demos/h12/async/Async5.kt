@@ -22,14 +22,14 @@ fun getNamesAsync(persons: List<Person>) =
 
 suspend fun getNameAsync(p: Person): Deferred<String> {
     println("getNameAsync for $p")
-    val async = GlobalScope.async {
+    val deferredName = GlobalScope.async {
         val ms = rand(4000)
         delay(ms)
         log(p, ms)
         p.name
     }
     println("getNameAsync request fired for $p; waiting for response....")
-    return async
+    return deferredName
 }
 
 private fun log(p: Person, ms: Long) = println("getting ${p.name} took $ms ms.")

@@ -21,12 +21,15 @@ fun launchManyCoroutinesAndAwaitResult() {
     // val sum = deferred.sumOf { it.await().toLong() }
 
     runBlocking {
-        val sum = deferred.sumOf { it.await().toLong() }
-        println("Sum: $sum")
+        deferred.sumOf {
+            it.await().toLong()
+        }.run {
+            println("Sum: $this")
+        }
     }
 
     // Q: How long does this take?
-    // A: run it. It doesn't take 1_000_000 seconds, so coroutines run concurrently.
+    // A: Run it. It doesn't take 1_000_000 seconds, so coroutines run concurrently.
 
     // See resources/../
 }

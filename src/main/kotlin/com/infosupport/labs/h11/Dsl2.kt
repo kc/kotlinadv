@@ -1,5 +1,3 @@
-@file:JvmName("Dsl1Kt")
-
 package com.infosupport.labs.h11
 
 import kotlinx.html.*

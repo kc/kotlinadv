@@ -16,7 +16,8 @@ import kotlinx.coroutines.runBlocking
 // Multiple values can be represented in Kotlin using collections:
 fun simple(): List<Int> = listOf(1, 2, 3)
 
-// If we are computing the numbers with some CPU-consuming blocking code (each computation taking 100ms), then we can represent the numbers using a Sequence:
+// If we are computing the numbers with some CPU-consuming blocking code (each computation taking 100ms),
+// then we can represent the numbers using a Sequence:
 fun sequence(): Sequence<Int> = sequence { // sequence builder
     for (i in 1..3) {
         Thread.sleep(1000) // pretend we are computing it
@@ -25,10 +26,15 @@ fun sequence(): Sequence<Int> = sequence { // sequence builder
 }
 
 // However, this computation blocks the main thread that is running the code.
-// When these values are computed by asynchronous code we can mark the simple function with a suspend modifier, so that it can perform its work without blocking and return the result as a list:
+// When these values are computed by asynchronous code we can mark the simple function with a suspend modifier,
+// so that it can perform its work without blocking and return the result as a list:
 suspend fun suspendable(): List<Int> {
-    delay(3000) // pretend we are doing something asynchronous here
-    return listOf(1, 2, 3)
+    val list = mutableListOf<Int>()
+    for (i in 1..3) {
+        delay(1000) // pretend we are computing it
+        list += i
+    }
+    return list
 }
 
 // Using the List<Int> result type, means we can only return all the values at once.

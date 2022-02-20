@@ -1,96 +1,68 @@
 package com.infosupport.demos.h11
 
-import java.util.*
+// Scope functions
 
-// Building structured APIs: lambdas with receivers in DSLs
-// Lambdas with receivers and extension function types
+// The Kotlin standard library contains several functions whose sole purpose
+// is to execute a block of code within the context of an object.
+
+// In this scope, you can access the object without its name. Such functions are called scope functions.
+// There are five of them: let, run, with, apply, and also.
+// They differ in scope object and return value: https://kotlinlang.org/docs/scope-functions.html#function-selection
+
+val pairs = mutableMapOf(1 to "one")
 
 fun main() {
-    // Suppose we want to create a function to build a string.
 
-    // Lambda with receiver:
-    println(
-        // buildString gets a lambda WITH a StringBuilder
-        buildString { sb ->
-            sb.append("snessnaj marb")
-            sb.reverse()
-            sb.capEachWord()
+    // Some examples ...
+
+    val pairsToo: MutableMap<Int, String> =
+        pairs
+            .apply {
+                this[2] = "two"
+                replace(2, "twee") // returns this
+            }
+
+    val with: Unit =
+        with(pairs) {
+            this[3] = "three"
+            replace(3, "drie")
         }
-    )
 
-    println(
-        // same, but now using it
-        buildString {
-            it.append("retsek ellej naj")
-            it.reverse()
-            it.capEachWord()
-        }
-    )
-
-    println(
-        // buildStringDSL gets a lambda ON a StringBuilder
-        buildStringDSL {
-            // we're in the scope of StringBuilder, so we can access members of StringBuilder directly here
-            append("ytinummoc avaj")
-            reverse()
-            capEachWord()
-        }
-    )
-
-    //  Create your own "language elements"
-    //  I created my own forEach:
-    forEach(persons) {
-        // we're in the scope of Person, so we can access members of Person directly here
-        birthday()
-
-        // if person has separate firstname, print it
-        firstname()?.let { println("Person firstname is $it") }
-
-        println("Person is: $this")
+    val let: String? = pairs.let {
+        it[4] = "four"
+        it.replace(4, "vier")
     }
 
-    forEach((-2..3).toList()) {
-        // we're in the scope of Int, so we can access members of Int directly here
-        val posneg = if (this.compareTo(0) == 1) "positive" else "negative"
-        println("Number $this is $posneg.")
+    // Apply as Person builder:
+    val bram = Person().apply {
+        name = "Bram"
+        age = 42 // returns this
     }
 
-}
-
-fun buildString(body: (StringBuilder) -> Unit): String {
-    val sb = StringBuilder()
-    body(sb) // call lambda WITH sb as param
-    return sb.toString()
-}
-
-fun buildStringDSL(body: StringBuilder.() -> Unit): String {
-    val sb = StringBuilder()
-    body(sb) // call lambda WITH sb as param
-    return sb.toString()
-}
-
-private fun StringBuilder.capEachWord() {
-    val sj = StringJoiner(" ")
-
-    val wordsCapped = split(" ").map { it.first().uppercase() + it.substring(1 until it.length) }
-    wordsCapped.forEach { sj.add(it) }
-
-    clear()
-    append(sj.toString())
-}
-
-fun <T> forEach(items: List<T>, body: T.() -> Unit) {
-    for (item in items) {
-        body(item)
+    bram.run {
+        name = "Abraham Janssens"
+        firstname()
+    }.also {
+        println(it ?: "No firstname...")
     }
+
+    // without run
+    bram.name = "Abraham Janssens"
+    val firstname = bram.firstname()
+    println(firstname ?: "No firstname...")
+
+    bram.let {
+        it.age?.plus(10)
+        it.copy()
+    }.also {
+        println("The copied person is: ")
+        println(it)
+    }
+
+    // Q: What's the signature of these functions?
+    // Q: How can we create these ourselves? See next...
 }
 
-data class Person(var name: String? = "", var age: Int? = null, private val i: Int = 0)
 
-fun Person.birthday(): Int? = age?.plus(1)
-fun Person.firstname() = name?.substringBefore(" ")
 
-val persons = listOf(
-    Person("Bram Janssens", 28),
-    Person("Alice", 29)
-)
+

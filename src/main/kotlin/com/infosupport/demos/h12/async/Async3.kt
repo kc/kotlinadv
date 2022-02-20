@@ -29,14 +29,12 @@ fun networkCallsSequential() {
     }
 }
 
-// how to cancel a job with cancel:
+// Cancel a job with cancel()
 fun networkCallsSequentialWithCancel() {
     printheader(::networkCallsSequentialWithCancel)
     runBlocking {
         val job = launch {
-            println("doNetworkCall")
             val networkCallAnswer = doNetworkCall()
-            println("doNetworkCall2")
             val networkCallAnswer2 = doNetworkCall2()
             println("result: $networkCallAnswer, $networkCallAnswer2")
         }
@@ -46,15 +44,13 @@ fun networkCallsSequentialWithCancel() {
     }
 }
 
-// how to cancel a job with withTimeout:
+// Cancel a job with withTimeout
 fun networkCallsSequentialWithTimeout() {
     printheader(::networkCallsSequentialWithTimeout)
     try {
         runBlocking {
             withTimeout(150) {
-                println("doNetworkCall")
                 val networkCallAnswer = doNetworkCall()
-                println("doNetworkCall2")
                 val networkCallAnswer2 = doNetworkCall2()
                 println("result: $networkCallAnswer, $networkCallAnswer2")
             }
@@ -80,7 +76,6 @@ fun networkCallsDispatched() {
         delay(50)                     // will suspend this task on main
         log("done")
     }
-
 }
 
 fun networkCallsConcurrentlyWithJoins() {
@@ -116,7 +111,7 @@ fun networkCallsConcurrentlyWithAsync() {
         }
 
         val answer2 = async {
-            val doc = getDocument(2)          // .. and then
+            val doc = getDocument(2)           // .. and then
             val response = doNetworkCall2(doc) // .. and then
             response
         }
@@ -134,12 +129,14 @@ suspend fun getDocument(id: Int): String {
 }
 
 suspend fun doNetworkCall(json: String = "{}"): String {
-    delay(100L)
+    printheader(::doNetworkCall)
+    delay(200L)
     return "the answer to $json is: 42"
 }
 
 suspend fun doNetworkCall2(json: String = "{}"): String {
-    delay(200L)
+    printheader(::doNetworkCall2)
+    delay(100L)
     return "the answer to $json is: 1337"
 }
 
@@ -148,8 +145,7 @@ fun main() {
     // println(measureTime { networkCallsSequential() })
     // println(measureTime { networkCallsSequentialWithCancel() })
     // println(measureTime { networkCallsSequentialWithTimeout() })
-    println(measureTime { networkCallsDispatched() })
+    // println(measureTime { networkCallsDispatched() })
     // println(measureTime { networkCallsConcurrentlyWithJoins() })
-    // println(measureTime { networkCallsConcurrentlyWithAsync() })
-
+    println(measureTime { networkCallsConcurrentlyWithAsync() })
 }
