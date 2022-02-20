@@ -17,7 +17,7 @@ import kotlin.reflect.jvm.javaType
 // Now, we're studying the implementation of deserialize<Type>(json).
 // Example call:
 val json = """{"title": "Catch-22", "author": {"name": "J. Heller", "age": 42}}"""
-val p: Book = deserialize<Book>(json)
+val b = deserialize<Book>(json)
 
 // How to define and implement?
 // Input is: reified type param T, string

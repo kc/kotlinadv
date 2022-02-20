@@ -1,24 +1,58 @@
+@file:JvmName("Dsl1Kt")
+
 package com.infosupport.labs.h11
 
-// 2. Let's write this little bit of DSL now, so that the code in boot compiles. Use teh invoke convention on dependencies.
+import kotlinx.html.*
+import kotlinx.html.stream.createHTML
 
-fun boot() {
+// 2. HTML DSL
 
-    val dependencies = Dependencies()
+// Refactor dropdownExample() into dropdownExampleDSL().
+//
+// Create the necessary functions like dropdownButton, dropdownMenu etc.
+// Hints:
+//  - start from the inside, i.e. at li {...}
+//  - use can use your IDE's "refactor" options and watch the outcome,
+//      but also, try a few refactorings manually
+//  - use the comments inside the function as hints
 
-    // You can call compile on `dependencies` directly:
-    // TODO uncomment and implement:
-    // dependencies.compile("junit:junit:4.11")
+fun dropdownExample() = createHTML()
+    // createHTML() returns TagConsumer<T>, so dropdown should be defined on TagConsumer<T>,
+    // but the body works on DIV, so lambda should be defined on DIV
+    .div(classes = "dropdown") {
+        // this = DIV, so dropdownButton should be defined on DIV,
+        // but the body works on BUTTON, so lambda should be defined on BUTTON
+        button(classes = "btn dropdown-toggle") {
+            // this = BUTTON, so fun should be defined on BUTTON,
+            +"Dropdown"
+            span(classes = "caret")
+        }
+        ul(classes = "dropdown-menu") {
+            // this = UL, so item should be defined on UL,
+            // but the body works on LI, so lambda should be defined on LI
+            li { a("#") { +"Action" } }
+            li { a("#") { +"Another action" } }
 
-    // or
+            // this = UL, so functions below should be defined on UL,
+            // and body works on nothing
+            li { role = "separator"; classes = setOf("divider") }
+            li { classes = setOf("dropdown-header"); +"Header" }
 
-    // You can invoke `dependencies` with a lambda as parameter:
-    // TODO uncomment and implement:
-    // dependencies {
-    //     compile("junit:junit:4.11")
-    // }
+            // see item
+            li { a("#") { +"Separated link" } }
+        }
+    }
+
+/*
+fun dropdownExampleDSL() = createHTML().dropdown {
+    dropdownButton { +"Dropdown" }
+    dropdownMenu {
+        item { link("#") { +"Action" } }
+        item { link("#") { +"Another action" } }
+        divider()
+        dropdownHeader("dropdown-header")
+        item { link("#") { +"Separated link" } }
+    }
 }
+*/
 
-class Dependencies {
-    // ...? TODO
-}

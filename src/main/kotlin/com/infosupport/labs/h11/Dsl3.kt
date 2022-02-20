@@ -1,8 +1,6 @@
 package com.infosupport.labs.h11
 
-// 3.
-
-// 4. How can we implement a DSL for DML (i.e. select ...)?
+// 3. How can we implement a DSL for DML (i.e. select ...)?
 // SELECT cu.name
 //   FROM Country as co
 //   JOIN Customer as cu ON co.id = cu.countryId
@@ -24,7 +22,7 @@ package com.infosupport.labs.h11
 //   so we can only use eq within the context of a SqlExpressionBuilder
 // - define forEach on class Query
 
-// 5. (IF TIME PERMITS) Extend your DSL to support:
+// 4. (IF TIME PERMITS) Extend your DSL to support:
 // (Country join Customer)
 //     .select { Country.name eq "USA" and Customer.age gt 18}
 //     .forEach { println(it) }

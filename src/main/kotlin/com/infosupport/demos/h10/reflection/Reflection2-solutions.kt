@@ -14,6 +14,10 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 
+fun main() {
+    println(serialize(Person("Bram", 41, 42, birthDate = LocalDate.of(1979, 8, 22))))
+}
+
 fun serialize(obj: Any): String = buildString { serializeObject(obj) }
 
 // 1.
@@ -98,8 +102,4 @@ fun <T : Any> KClass<T>.createInstance(): T {
     )
 
     return noArgConstructor.call()
-}
-
-fun main() {
-    println(serialize(Person("Bram", 41, 42, birthDate = LocalDate.of(1979, 8, 22))))
 }

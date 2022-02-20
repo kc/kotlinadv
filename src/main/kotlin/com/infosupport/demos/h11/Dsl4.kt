@@ -6,7 +6,7 @@ import com.infosupport.labs.h8.Person
 // The “invoke” convention: objects callable as functions
 
 // First, we define some `operator fun invoke` on a class
-class Greeter(val greeting: String) {
+class Greeter(private val greeting: String) {
     operator fun invoke(name: String) {
         println("$greeting, $name!")
     }
@@ -64,6 +64,8 @@ fun invokeUseCase3() {
         .filter(OlderThanPerson(sint))
         .forEach { println(it) }
 }
+
+// Another example: lab 1.
 
 fun main() {
     invokeDemo()

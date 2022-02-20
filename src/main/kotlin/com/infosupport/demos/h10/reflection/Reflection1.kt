@@ -8,10 +8,14 @@ import kotlin.reflect.full.memberProperties
 
 // The API (see class diagram at https://drek4537l1klr.cloudfront.net/jemerov/HighResolutionFigures/figure_10-6.png)
 
+fun main() {
+    apiDemo()
+}
+
 fun apiDemo() {
     val person = Person("Alice", 29, 42, birthDate = LocalDate.of(1970, 1, 1))
-
     val kClass = getKClass(person)
+
     getProperties(kClass)
     callGetters(kClass, person)
     callMethod(person)
@@ -33,22 +37,15 @@ private fun getProperties(kClass: KClass<Person>) {
 
     //                         check this type: KProperty1<..> -|> KProperty
     memberProperties.forEach { prop: KProperty1<Person, *> -> println(prop.name) }
-
 }
 
 // 3a. KFunction -|> KCallable -|> KAnnotatedElement
 private fun callGetters(kClass: KClass<Person>, p: Person) {
     println(" -------- callGetters -------- ")
     kClass.memberProperties.forEach {
-        val getter: KCallable<*> = it.getter // getter is a KCallable
-        val call = getter.call(p) // p is the object on which we call  the getter
+        val getter = it.getter // getter is a KCallable
+        val call = getter.call(p) // p is the object on which we call the getter
         println("${getter.name} = $call")
-
-        // KFunction is a KCallable
-        val getterMoreSpecificType: KFunction<*> = it.getter
-
-        // KProperty1.Getter is a KFunction
-        val getterMostSpecificType: KProperty1.Getter<Person, Any?> = it.getter
     }
 }
 
@@ -96,6 +93,3 @@ fun listParametersOfSetters(kClass: KClass<Person>) {
     */
 }
 
-fun main() {
-    apiDemo()
-}

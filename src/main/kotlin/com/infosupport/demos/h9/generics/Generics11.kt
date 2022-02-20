@@ -1,13 +1,14 @@
 package com.infosupport.demos.h9.generics
 
 // Variance: generics and subtyping
-// Contravariance
+// Contravariance on classes
 
 // Comparator only uses its T in "in positions":
 // interface Comparator<in T> {
 //     fun compare(e1: T, e2: T): Int
 // }
 
+// So Comparator is contravariant:
 fun useComparator() {
     val anyComparator = Comparator<Any> { e1, e2 ->
         e1.hashCode() - e2.hashCode()
@@ -20,7 +21,6 @@ fun useComparator() {
 
     // Contravariance reverses subtyping relation:
     // String -|> Any but Comparator<String> <|- Comparator<Any>
-    // Comparator is contravariant.
 }
 
 // -----------------------

@@ -1,19 +1,14 @@
 package com.infosupport.demos.h9.generics
 
-// Variance: covariance and contravariance on functions
+// Variance: generics and subtyping
+// Covariance and contravariance on functions
 
 fun covariant(list: MutableList<out Number>) { // out = producer = read only
     list.forEach { println(it) } // read from list
     // list.add(42f)             // write element not allowed, since MutableList can `out`put Numbers only
 }
 
-fun contravariant(list: MutableList<in Number>) { // in = consumer = write (and read)
-    list.forEach { println(it) } // read from list
-    list.add(42f)                // write element allowed too
-}
-
-// What can we pass to these functions?
-
+// What can we pass to this function?
 fun passToCovariant() {
     // OK: mutable list of Number and all its subtypes
     covariant(mutableListOf<Number>())
@@ -28,6 +23,12 @@ fun passToCovariant() {
     //                        <etc.>
 }
 
+fun contravariant(list: MutableList<in Number>) { // in = consumer = write (and read)
+    list.forEach { println(it) } // read from list
+    list.add(42f)                // write element allowed too
+}
+
+// What can we pass to this function?
 fun passToContavariant() {
     // OK: mutable list of Number and all its supertypes:
     contravariant(mutableListOf<Number>())
@@ -45,10 +46,13 @@ fun passToContavariant() {
 
 // So: you define a covariant parameter of some function f with `out`:
 //     f(param: SomeClass<out Type>)
-// The function can only read from the param.
+// The function can only read from the param: param is a producer.
 // As type argument you can pass Type and its subtypes.
 
 // So: you define a contravariant parameter of some function f with `in`:
-//     f(param: SomeClass<in Number>)
-// The function can read to and write from the param.
+//     f(param: SomeClass<in Type>)
+// The function can read to and write from the param: param is a consumer and producer.
 // As type argument you can pass Type and its supertypes.
+
+// In JAVA:   PECS (Producer extends Consumer super)
+// In Kotlin: POCI (Producer out Consumer in)

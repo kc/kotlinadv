@@ -3,7 +3,7 @@ package com.infosupport.demos.h11.impl.refac
 // Building structured APIs: lambdas with receivers in DSLs
 // Builders, HTML example
 
-// Full implementation (refactored in the next source file...)
+// Refactored implementation
 
 fun main() {
     println(createTable())
@@ -17,6 +17,16 @@ fun createTable() =
             }
         }
     }
+
+fun createAnotherTable() = table {
+    for (i in 1..2) {
+        tr {
+            td {
+            }
+        }
+    }
+}
+
 
 fun table(render: TABLE.() -> Unit) = TABLE().apply(render)
 
@@ -49,12 +59,3 @@ class TR : Tag("tr") {
 
 class TD : Tag("td")
 
-// TODO show
-fun createAnotherTable() = table {
-    for (i in 1..2) {
-        tr {
-            td {
-            }
-        }
-    }
-}

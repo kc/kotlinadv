@@ -1,6 +1,6 @@
 package com.infosupport.demos.h10.reflection
 
-import com.infosupport.demos.h9.generics.DateSerializer
+import com.infosupport.demos.h10.annotations.DateSerializer
 import ru.yole.jkid.CustomSerializer
 import ru.yole.jkid.JsonExclude
 import ru.yole.jkid.JsonName

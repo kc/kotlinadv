@@ -9,6 +9,12 @@ import kotlin.reflect.KProperty
 // How to use?
 // To explore this, we're implementing JKid now.
 
+fun main() {
+    println(serialize(Person("Bram", 41, 42, birthDate = LocalDate.of(1979, 8, 22))))
+    // should output:
+    // {"leeftijd": 41, "birthDate": "22-augustus-1979", "name": "Bram", "shoeSize": 42}
+}
+
 // 1. First the basic serialization with serialize(object). See Annotations2.jkidDemo
 // How to build this?
 // Well, object in, string out, so we start with:
@@ -61,6 +67,4 @@ fun <T : Any> KClass<T>.createInstance(): T {
     // - call the ctor and return that instance
 }
 
-fun main() {
-    println(serialize(Person("Bram", 41, 42, birthDate = LocalDate.of(1979, 8, 22))))
-}
+

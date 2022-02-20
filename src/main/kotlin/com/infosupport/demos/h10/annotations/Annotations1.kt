@@ -1,4 +1,4 @@
-package com.infosupport.demos.h9.generics
+package com.infosupport.demos.h10.annotations
 
 // Declaring and applying annotations
 

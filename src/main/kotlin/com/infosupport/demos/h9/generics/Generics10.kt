@@ -1,7 +1,7 @@
 package com.infosupport.demos.h9.generics
 
 // Variance: generics and subtyping
-// Covariance
+// Covariance on classes
 
 // Given
 open class Species {

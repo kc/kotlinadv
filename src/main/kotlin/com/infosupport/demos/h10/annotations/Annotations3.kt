@@ -1,4 +1,4 @@
-package com.infosupport.demos.h9.generics
+package com.infosupport.demos.h10.annotations
 
 import ru.yole.jkid.CustomSerializer
 import ru.yole.jkid.DeserializeInterface
