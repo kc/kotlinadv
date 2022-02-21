@@ -15,7 +15,7 @@ fun String.filter(predicate: (Char) -> Boolean = { it != ' ' }): String {
 }
 
 // c.
-fun List<String>.avgLengthFor(predicate: (String) -> Boolean) = avgLengthFor({ s: String -> s.length }, predicate)
+fun List<String>.avgLengthFor(predicate: (String) -> Boolean) = filter(predicate).map { it.length }.average()
 
 // d.
 fun <T> List<T>.avgLengthFor(
@@ -59,7 +59,7 @@ fun testFilter() {
 fun testC() {
     println(listOf("123", "abc", "de", "f").avgLengthFor { it.all { c -> c in 'a'..'z' } } == 2.0)
     println(listOf("123", "abc", "hans@email.de", "pierre@croissant.fr").avgLengthFor { it.contains('@') } == 16.0)
-    println(listOf(123, 45678, 9, 0).avgLengthFor({ it.toString().length }, { it > 100 }) == 4.0)
+    println(listOf("123", "45678", "9", "0").avgLengthFor { it.length > 3 } == 4.0)
 }
 
 fun testD() {

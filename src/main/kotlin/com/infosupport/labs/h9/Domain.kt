@@ -16,25 +16,21 @@ interface Disposable {
     fun action(): String
 }
 
-class Compost(override val name: String) :
-    Disposable {
+interface Transport : Disposable
+
+class Compost(override val name: String) : Disposable {
     override fun action() = "Add to composter"
 }
 
-interface Transport : Disposable
-
-class Donation(override val name: String) :
-    Transport {
+class Donation(override val name: String) : Transport {
     override fun action() = "Call for pickup"
 }
 
-class Recyclable(override val name: String) :
-    Transport {
+class Recyclable(override val name: String) : Transport {
     override fun action() = "Put in bin"
 }
 
-class Landfill(override val name: String) :
-    Transport {
+class Landfill(override val name: String) : Transport {
     override fun action() = "Put in dumpster"
 }
 

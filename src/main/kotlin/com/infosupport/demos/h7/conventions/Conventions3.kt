@@ -56,9 +56,9 @@ fun rangeToConvention() {
     val vacation = now..now.plusDays(10)
     println(now.plusWeeks(1) in vacation)
 
-    // With points: Point only needs to implement Comparable
+    // With points: overload rangeTo for Point OR let Point implement Comparable
     val point = Point(2, 2)
-    val straightLine = Point(0, 0)..Point(10, 10)
+    val straightLine = Point(0, 0)..Point(10, 10) // == Point(0,0).rangeTo(Point(10,10))
     println(point in straightLine)
 }
 

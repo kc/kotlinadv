@@ -2,9 +2,9 @@ package com.infosupport.demos.h7.conventions
 
 import java.beans.PropertyChangeListener
 import java.beans.PropertyChangeSupport
-import java.lang.Math.floor
-import java.lang.Math.pow
 import java.time.LocalDate
+import kotlin.math.floor
+import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
@@ -14,7 +14,7 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 
     override fun compareTo(other: Point) = floor(vectorLength(this) - vectorLength(other)).toInt()
 
-    private fun vectorLength(p: Point) = sqrt(pow(p.x.toDouble(), 2.0) + pow(p.y.toDouble(), 2.0))
+    private fun vectorLength(p: Point) = sqrt(p.x.toDouble().pow(2.0) + p.y.toDouble().pow(2.0))
 }
 
 data class MutablePoint(var x: Int, var y: Int)
@@ -74,7 +74,7 @@ class Order(total: Int, vat: Int, val date: LocalDate) : TwoOperands {
     override val a = total
     override val b = vat
 
-    val sum by Sum()
+    val totalInclVat by Sum()
 }
 
 interface TwoOperands {

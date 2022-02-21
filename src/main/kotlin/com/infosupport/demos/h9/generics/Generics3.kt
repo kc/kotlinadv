@@ -2,13 +2,13 @@ package com.infosupport.demos.h9.generics
 
 // Declaring generic functions and classes
 // Generic Classes
-
+//               type parameter
 interface MyList<T> { // Declares T, called the type parameter
     operator fun get(index: Int): T // use T
     // ...
 }
 
-// Non generic subclass, providing T as String
+// Non generic subclass, providing T as String (= type argument)
 class StringList : MyList<String> { // String is called the type argument
     override fun get(index: Int): String = TODO()
 }

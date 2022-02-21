@@ -1,23 +1,10 @@
 package com.infosupport.labs.h9
 
-// 1. Do (some of) the following exercises from Atomic Kotlin:
+// 1. Do the following exercise from Atomic Kotlin:
 //    Power Tools               Exercise
-//      - Creating generics:    1 (hint: you'll need to declare Items as 'fun interface...')
-//                              3 (use code below as main code)
+//      - Creating generics:    2
 
-/*
-    fun main() {
-        val catBox: Box<Cat> = Box(Cat())
-        val outBoxAny: OutBox<Any> = catBox
-        val a: Any = outBoxAny.get()
-        val inBoxAny: InBox<Any> = Box(217)
-        val inBoxCat: InBox<Any> = inBoxAny
-        inBoxCat.put(Cat())
-
-    }
-*/
-
-// 2. Given is the domain in Domain.kt including a example list of disposable items.
+// 2. Given is the domain in Domain.kt including an example list of disposable items.
 //    Now, create a function `select(): List<String>` so that this code compiles and the tests succeed:
 
 /*
@@ -33,4 +20,6 @@ fun main() {
 }
 */
 
-
+// 3. Do the following exercise from Atomic Kotlin:
+//    Power Tools               Exercise
+//      - Creating generics:    3

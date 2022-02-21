@@ -31,11 +31,11 @@ fun testC() {
     /*
     println(listOf("123", "abc", "de", "f").avgLengthFor { it.all { c -> c in 'a'..'z' } } == 2.0)
     println(listOf("123", "abc", "hans@email.de", "pierre@croissant.fr").avgLengthFor { it.contains('@') } == 16.0)
-    println(listOf(123, 45678, 9, 0).avgLengthFor({ it.toString().length }, { it > 100 }) == 4.0)
+    println(listOf("123", "45678", "9", "0").avgLengthFor { it.length > 3 } == 4.0)
     */
 }
 
-// d. Overload your method from c so that is works on all types and you can specify the way it counts the length.
+// d. Overload your method from c so that is works on all types, and you can specify the way it counts the length.
 //    - Generify it with a type parameter T
 //    - Create a new first parameter `counter`, with default value `length of toString of element`
 //    - Make the second parameter `predicate` nullable with default value null.
@@ -68,14 +68,15 @@ fun main() {
 //      - Is the inlined function body inlined to the call-site when it is declared outside the call-site?
 
 // 3.
-// Change the following two functions. To jump out of the lambda, add:
+// Finish the following two functions: jump out of the lambda's.
+// Add:
 //  - a local return, or
 //  - a non-local return
 // Experiment and see what happens.
 fun returnFromNonInlined() {
     val newList = listOf(1, 2, 3).peekNotInlined {
         println("peeking $it")
-        // TODO jump
+        // TODO jump local and non-local
     }
 
     println(newList)

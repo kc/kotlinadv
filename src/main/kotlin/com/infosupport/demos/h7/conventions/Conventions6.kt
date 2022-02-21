@@ -20,7 +20,7 @@ private fun summing() {
     println(addition.sum) // sum.getValue is called
 
     val myOrder = Order(100, 22, now())
-    println(myOrder.sum)
+    println(myOrder.totalInclVat)
 }
 
 fun lazyLoading() {

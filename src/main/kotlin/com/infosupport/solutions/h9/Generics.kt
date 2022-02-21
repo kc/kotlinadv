@@ -16,3 +16,5 @@ fun main() {
     select<Landfill>() eq "[Trash]"
 }
 
+// 3.
+// See Atomic Kotlin

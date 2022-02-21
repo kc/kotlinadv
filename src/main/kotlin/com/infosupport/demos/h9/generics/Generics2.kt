@@ -11,7 +11,7 @@ val alphabet = ('a'..'z').toList()
 val letters1 = alphabet.mySlice<Char>(0..2)
 val letters2 = alphabet.mySlice(0..10)
 
-fun <T> List<T>.myFilter(predicate: (T) -> Boolean): List<T> = filter(predicate)
+fun <T> List<T>.myFilter(predicate: (T) -> Boolean): List<T> = filter(predicate).toList()
 //  ^^^
 //  type parameter, used in receiver, argument and return type
 

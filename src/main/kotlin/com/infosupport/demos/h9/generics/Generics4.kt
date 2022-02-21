@@ -14,12 +14,13 @@ fun <T : Number> List<T>.mySum(): Int = this.sumOf { it.toInt() }
 
 // allowed calls:
 val sum3 = listOf(1, 2, 3).mySum()
-val sum4 = listOf(1.0, 2.0f, 3).mySum()
+val listOf: List<Number> = listOf(1.0, 2.0f, 3)
+val sum4 = listOf.mySum()
 
 // ------------
 
 // T must be comparable
-fun <T : Comparable<T>> max(first: T, second: T): T {
+fun <T> max(first: T, second: T): T where T : Comparable<T>{
     return if (first > second) first else second
 }
 

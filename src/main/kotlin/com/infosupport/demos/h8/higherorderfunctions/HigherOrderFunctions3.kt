@@ -10,6 +10,7 @@ fun lookForAliceForLoop(people: List<Person>) {
         }
     }
     println("Done") // won't be printed when Alice is found
+    return
 }
 
 fun lookForAliceLambda(people: List<Person>) {
@@ -49,6 +50,7 @@ fun lookForAliceAnonymousFunction(people: List<Person>) {
             return // returns from anonymous function
         }
     })
+    println("Done") // will always be printed
 }
 
 fun labeledThis() {

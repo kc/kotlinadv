@@ -13,4 +13,3 @@ val readers1: MutableList<String> = mutableListOf()
 val readers2 = mutableListOf<String>()
 
 // Kotlin doesn't support raw types, i.e. val listraw: List. Always use a type argument.
-

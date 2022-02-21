@@ -59,15 +59,15 @@ fun withHelperClass() {
 fun withDelegatedProperty() {
     val w = WithDelegatedProperty(2)
 
-    val oldValue = w.p // getP --> delegate.getValue
+    val oldValue = w.name // getP --> delegate.getValue
     println(oldValue)
 
-    w.p = "4"          // setP --> delegate.setValue
-    val newValue = w.p
+    w.name = "4"          // setP --> delegate.setValue
+    val newValue = w.name
     println(newValue)
 
-    w.p = "???"
-    val newValue2 = w.p
+    w.name = "???"
+    val newValue2 = w.name
     println(newValue2)
 }
 
@@ -151,19 +151,40 @@ class Helper(var i: Int) {
 }
 
 // DRY ------------------
-class WithDelegatedProperty(var i: Int) {
+// 1. Simple
+class WithDelegatedPropertySimple(var i: Int) {
     var p: String by Delegate()
 }
 
 class Delegate {
-
     // operator getValue, check the syntax!
-    operator fun getValue(f: WithDelegatedProperty, property: KProperty<*>) =
-        "The value is ${isEverything(f.i)}."
+    operator fun getValue(source: WithDelegatedPropertySimple, property: KProperty<*>) =
+        "The value is ${isEverything(source.i)}." + property.name
 
     // operator setValue, check the syntax!
-    operator fun setValue(f: WithDelegatedProperty, property: KProperty<*>, value: String) {
-        f.i = value.toIntOrNull() ?: 42
+    operator fun setValue(source: WithDelegatedPropertySimple, property: KProperty<*>, value: String) {
+        source.i = value.toIntOrNull() ?: 42
+    }
+}
+
+// 1. Reusable (using HasI and override var i)
+class WithDelegatedProperty(override var i: Int) : HasI { // implements HasI, delegate handles HasI
+    var name: String by IsEverythingDelegate()
+}
+
+class WithDelegatedPropertyToo(override var i: Int) : HasI {
+    var nameToo: String by IsEverythingDelegate()
+}
+
+class IsEverythingDelegate {
+
+    // operator getValue, check the syntax!
+    operator fun getValue(hi: HasI, property: KProperty<*>) =
+        "The value is ${isEverything(hi.i)}." + property.name
+
+    // operator setValue, check the syntax!
+    operator fun setValue(hi: HasI, property: KProperty<*>, value: String) {
+        hi.i = value.toIntOrNull() ?: 42
     }
 }
 

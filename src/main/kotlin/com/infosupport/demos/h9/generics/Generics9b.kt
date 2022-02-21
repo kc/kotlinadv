@@ -3,7 +3,7 @@ package com.infosupport.demos.h9.generics
 // Variance: generics and subtyping
 // Covariance and contravariance on functions
 
-fun covariant(list: MutableList<out Number>) { // out = producer = read only
+fun <T : Number> covariant(list: MutableList<out T>) { // out = producer = read only
     list.forEach { println(it) } // read from list
     // list.add(42f)             // write element not allowed, since MutableList can `out`put Numbers only
 }
