@@ -1,4 +1,4 @@
-package com.infosupport.demos.h12.async
+package com.infosupport.demos.h12.async.channels
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
