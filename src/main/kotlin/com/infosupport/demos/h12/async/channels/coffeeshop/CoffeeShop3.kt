@@ -6,8 +6,9 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlin.system.measureTimeMillis
 
 // The problem with CoffeeShopTwo was that both baristas processed the same set of orders.
-// This introduces a way for the baristas and cashier to talk to each other so that the orders
-// are only processed once. We do this using channels.
+
+// This solution below introduces a way for the baristas and cashier to talk to
+// each other so that the orders are only processed once. We do this using channels.
 fun main() = runBlocking {
     val orders = listOf(Menu.Cappuccino(CoffeeBean.Regular, Milk.Whole),
         Menu.Cappuccino(CoffeeBean.Premium, Milk.Breve),

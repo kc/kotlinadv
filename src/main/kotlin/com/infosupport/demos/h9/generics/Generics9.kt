@@ -33,6 +33,9 @@ val safe = processList(listOf(1, 2))
 //      Int  -|>      Number
 // List<Int> -|> List<Number>
 
+// Q: How is List<T> defined?
+// A: See its source.
+
 // 2) Imagine that you have a function that takes a MutableList<Number> as an argument.
 //    It can read from AND write to the list.
 fun processMutableList(list: MutableList<Number>) {
@@ -50,21 +53,25 @@ fun processMutableList(list: MutableList<Number>) {
 // , which would break type safety of generics at compile time.
 // Same for other subtypes of Number.
 
-// Q: Is it safe to pass a MutableList<Any> to this function?
+// Q: Is it allowed to pass a MutableList<Any> to this function?
 // No!
 // val unsafe = processMutableList(mutableListOf<Any>(1, 2)) // doesn't compile
+// If this was allowed you would get a runtime error at the write action too.
 
 // MutableList is called invariant:
-// - MutableList<Int>    isn't substitutable for MutableList<Number>
-// - MutableList<Number> isn't substitutable for MutableList<Int>
+// Int -|> Number, but
+// MutableList<Int> isn't substitutable for MutableList<Number>
+
+// Number -|> Any, but
+// MutableList<Any> isn't substitutable for MutableList<Number>
 // No subtyping relationship.
+
+// Q: How is MutableList<T> defined?
+// A: See its source.
+
 
 // So
 // A: It is allowed, but only for List, not for MutableList.
 
 // How can we relax this a bit more, without losing safety? 
-// By making the functions co/contravariant: see 9b.
-
-
-
-
+// By making co/contravariant functions: see 9b.

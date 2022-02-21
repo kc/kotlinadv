@@ -26,7 +26,7 @@ fun sequence(): Sequence<Int> = sequence { // sequence builder
 }
 
 // However, this computation blocks the main thread that is running the code.
-// When these values are computed by asynchronous code we can mark the simple function with a suspend modifier,
+// When these values are computed by asynchronous code we can mark the function withsuspend,
 // so that it can perform its work without blocking and return the result as a list:
 suspend fun suspendable(): List<Int> {
     val list = mutableListOf<Int>()

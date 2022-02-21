@@ -14,9 +14,8 @@ import kotlin.time.measureTime
 // It's marked with keyword suspend, meaning this function can (only)
 // be called from a coroutine.
 
-// If we call two suspend functions one after the other in the same coroutine,
-// they will influence each other,
-// like in this example:
+// If we call two suspend functions one after the other _in the same coroutine_,
+// they will influence each other, like in this example:
 
 fun networkCallsSequential() {
     printheader(::networkCallsSequential)
@@ -142,10 +141,10 @@ suspend fun doNetworkCall2(json: String = "{}"): String {
 
 @ExperimentalTime // needed for built in function measureTime
 fun main() {
-    // println(measureTime { networkCallsSequential() })
+    println(measureTime { networkCallsSequential() })
     // println(measureTime { networkCallsSequentialWithCancel() })
     // println(measureTime { networkCallsSequentialWithTimeout() })
     // println(measureTime { networkCallsDispatched() })
     // println(measureTime { networkCallsConcurrentlyWithJoins() })
-    println(measureTime { networkCallsConcurrentlyWithAsync() })
+    // println(measureTime { networkCallsConcurrentlyWithAsync() })
 }

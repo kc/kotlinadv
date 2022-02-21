@@ -30,8 +30,6 @@ fun launchManyCoroutinesAndAwaitResult() {
 
     // Q: How long does this take?
     // A: Run it. It doesn't take 1_000_000 seconds, so coroutines run concurrently.
-
-    // See resources/../
 }
 
 private suspend fun doWork(n: Int): Int {
