@@ -3,7 +3,9 @@ package com.infosupport.demos.h12.async.channels.coffeeshop
 import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
 
-// convert CoffeeShopOne to process the orders using two coroutines
+// Concurrent coffeeshop: https://miro.medium.com/max/2400/1*5RsE1shRY2v46sl-mHA8oQ.png
+
+// convert CoffeeShop1 to process the orders using two coroutines
 // the orders are processed twice but they're processed concurrently
 fun main() = runBlocking {
     val orders = listOf(
@@ -24,6 +26,7 @@ fun main() = runBlocking {
     println("Execution time: $t ms")
 }
 
+// takes a list of orders and processes them one at a time
 private suspend fun makeCoffee(orders: List<Menu>) {
     for (o in orders) {
         log("Processing order: $o")

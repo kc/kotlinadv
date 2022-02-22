@@ -5,10 +5,13 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlin.system.measureTimeMillis
 
+// Channels: share the workload
+
 // The problem with CoffeeShopTwo was that both baristas processed the same set of orders.
 
 // This solution below introduces a way for the baristas and cashier to talk to
 // each other so that the orders are only processed once. We do this using channels.
+// See https://miro.medium.com/max/2400/1*khfG84QbarNrYDUUkiBmqA.gif
 fun main() = runBlocking {
     val orders = listOf(Menu.Cappuccino(CoffeeBean.Regular, Milk.Whole),
         Menu.Cappuccino(CoffeeBean.Premium, Milk.Breve),

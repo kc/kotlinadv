@@ -6,7 +6,8 @@ import kotlin.system.measureTimeMillis
 
 // Source: https://proandroiddev.com/kotlin-coroutines-channels-csp-android-db441400965f
 
-// make coffee by executing each step sequentially
+// Make coffee by executing each step sequentially
+// See https://miro.medium.com/max/2400/1*UFkhKurewEDwhRo7C0-jYQ.png
 fun main() {
     val orders = listOf(
         Menu.Cappuccino(CoffeeBean.Regular, Milk.Whole),
