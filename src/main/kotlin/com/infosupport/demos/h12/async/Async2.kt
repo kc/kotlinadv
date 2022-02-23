@@ -84,12 +84,12 @@ fun sameButWithJoin() {
         // A coroutine runs in a background job.
         // Conceptually, a job is a cancellable thing with a life-cycle that culminates in its completion.
         // See https://www.raywenderlich.com/books/kotlin-coroutines-by-tutorials/v2.0/chapters/3-getting-started-with-coroutines#toc-chapter-007-anchor-004
-        val job = GlobalScope.launch {
+        val coroutine = GlobalScope.launch {
             delay(1000L)
             log("World!")
         }
         println("Hello,")
-        job.join() // no delay anymore, wait here for job to finish
+        coroutine.join() // no delay anymore, wait here for job to finish
     }
     println("Done") // immediately when job is done
 }

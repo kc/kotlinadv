@@ -7,20 +7,18 @@ import kotlinx.coroutines.*
 // Coroutines
 // async await use case
 
-fun main() {
+fun main() = runBlocking {
     println("main start")
-    getNamesAsync(people)
+    printNamesAsync(people)
     println("main end")
 }
 
-fun getNamesAsync(persons: List<Person>) =
-    runBlocking {
-        persons
-            .map { getNameAsync(it) }
-            .forEach { println(it.await()) }
-    }
+suspend fun printNamesAsync(persons: List<Person>) =
+    persons
+        .map { getNameFromDbAsync(it) }
+        .forEach { println("Got person's name: ${it.await()}") }
 
-suspend fun getNameAsync(p: Person): Deferred<String> {
+suspend fun getNameFromDbAsync(p: Person): Deferred<String> {
     println("getNameAsync for $p")
     val deferredName = GlobalScope.async {
         val ms = rand(4000)
@@ -28,7 +26,7 @@ suspend fun getNameAsync(p: Person): Deferred<String> {
         log(p, ms)
         p.name
     }
-    println("getNameAsync request fired for $p; waiting for response....")
+    println("getNameFromDbAsync request fired for $p; waiting for response....")
     return deferredName
 }
 

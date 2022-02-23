@@ -19,11 +19,12 @@ package com.infosupport.demos.h11
 /* A: 1 is just a word for the DSL's grammar; let's take an object for that, i.e. an empty, static, global val.
       2 is for chaining, also grammar. On the object, we define `with`
 */
-/*// Solution (uncomment me):
+
+// Solution:
 
 object start
 
-infix fun String.should(x: start): StartWrapper = StartWrapper(this)
+infix fun String.should(dummy: start): StartWrapper = StartWrapper(this)
 
 class StartWrapper(val value: String) {
     infix fun with(prefix: String) {
@@ -37,7 +38,7 @@ fun main() {
     assert { "bram" should start with "abc" }
 }
 
-private fun assert(assertion: () -> Unit) {
+fun assert(assertion: () -> Unit) {
     try {
         assertion()
         println("OK")
@@ -45,5 +46,4 @@ private fun assert(assertion: () -> Unit) {
         System.err.println("NOK ${e.message}")
     }
 }
-*/
 

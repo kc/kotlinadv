@@ -12,6 +12,7 @@ fun makeDouble(n: Number): Double {
 // Q: Is it safe to pass an Int to this function?
 // A: Yes, because Int -|> Number
 val d = makeDouble(1)
+val f = makeDouble(1f)
 
 // Other types than numbers are of course not allowed:
 // val s = makeDouble("1")
@@ -39,7 +40,7 @@ val safe = processList(listOf(1, 2))
 // 2) Imagine that you have a function that takes a MutableList<Number> as an argument.
 //    It can read from AND write to the list.
 fun processMutableList(list: MutableList<Number>) {
-    list.forEach { println(it) } // read from list
+    val number: Number = list[1] // read element, is guaranteed to be a Number
     list.add(42f)                // write element, allowed since Float -|> Number
 }
 
@@ -55,20 +56,20 @@ fun processMutableList(list: MutableList<Number>) {
 
 // Q: Is it allowed to pass a MutableList<Any> to this function?
 // No!
-// val unsafe = processMutableList(mutableListOf<Any>(1, 2)) // doesn't compile
-// If this was allowed you would get a runtime error at the write action too.
+// val unsafe = processMutableList(mutableListOf<Any>("1", "2.0")) // doesn't compile
+// If this was allowed you would get a runtime error at the get action.
 
 // MutableList is called invariant:
 // Int -|> Number, but
 // MutableList<Int> isn't substitutable for MutableList<Number>
-
+//
 // Number -|> Any, but
 // MutableList<Any> isn't substitutable for MutableList<Number>
+//
 // No subtyping relationship.
 
 // Q: How is MutableList<T> defined?
 // A: See its source.
-
 
 // So
 // A: It is allowed, but only for List, not for MutableList.

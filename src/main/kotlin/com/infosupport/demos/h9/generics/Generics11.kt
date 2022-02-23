@@ -50,7 +50,7 @@ class CatConsumer : Consumer<Cat> {
 }
 
 // Expects a Consumer of animal.
-// Can be any subtype of Consumer<Animal>, since consumer is contravariant.
+// Can be any supertype of Consumer<Animal>, since consumer is contravariant.
 fun consumeAnimal(c: Consumer<Animal>, a: Animal) {
     c.consume(a)
 }
@@ -60,18 +60,19 @@ fun callConsumeAnimal() {
     // A SpeciesConsumer can consume cats and animals, just as the expected Consumer<Animal>.
     // Consuming means calling methods on it.
     // Any method of Species (here: spec()) can also be called on animals, since they are inherited.
-    consumeAnimal(SpeciesConsumer(), Cat())
     consumeAnimal(SpeciesConsumer(), Animal())
+    consumeAnimal(SpeciesConsumer(), Cat())
 
     // Allowed: Consumer<Animal> -|> Consumer<Animal>
+    // Any method of Animal (here: meow()) can also be called on cats, since they are inherited.
     consumeAnimal(AnimalConsumer(), Cat())
     consumeAnimal(AnimalConsumer(), Animal())
 
     // Suppose this was allowed, what would happen?
+    // Can any method of Cat (here: meow()) also be called on animals? NO!
     // consumeAnimal(CatConsumer(), Cat())      // this one could work
     // consumeAnimal(CatConsumer(), Animal())   // this one can't work
     //                                             you can't consume a generic Animal as a specific Cat; an Animal can't meow.
-    //                                             i.e. you can't call .meow on Animal.
     // Therefore it doesn't work; Consumer<Cat> !-|> Consumer<Animal>
 }
 

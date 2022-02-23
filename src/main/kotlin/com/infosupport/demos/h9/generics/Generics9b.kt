@@ -1,8 +1,11 @@
 package com.infosupport.demos.h9.generics
 
+import com.infosupport.demos.h11.Person
+
 // Variance: generics and subtyping
 // Covariance and contravariance on functions
 
+// Use site variance
 fun covariant(list: MutableList<out Number>) { // out = producer = read only
     list.forEach { println(it) } // read from list
     // list.add(42f)             // write element not allowed, since MutableList can `out`put Numbers only
@@ -33,7 +36,7 @@ fun contravariant(list: MutableList<in Number>) { // in = consumer = write (and 
 fun passToContavariant() {
     // OK: mutable list of Number and all its supertypes:
     contravariant(mutableListOf<Number>())
-    contravariant(mutableListOf<Any>())
+    contravariant(mutableListOf<Any>("One", Person()))
 
     // NOK: the rest (subtypes and unrelated types)
     // contravariant(mutableListOf<Int>())   // otherwise it could write a float in MutableList<Int>

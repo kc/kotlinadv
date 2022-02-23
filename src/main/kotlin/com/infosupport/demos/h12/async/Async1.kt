@@ -1,6 +1,7 @@
 package com.infosupport.demos.h12.async
 
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
@@ -25,11 +26,11 @@ fun testHowLightCoroutinesAre() {
 }
 
 private fun coroutine() {
-    GlobalScope.launch { /*noop*/ }
+    GlobalScope.launch { delay(10) }
 }
 
 private fun thread() {
-    thread { /*noop*/ }
+    thread { Thread.sleep(10) }
 }
 
 fun main() {

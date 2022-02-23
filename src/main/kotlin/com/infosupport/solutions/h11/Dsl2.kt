@@ -27,7 +27,7 @@ fun dropdownExampleDSL() = createHTML()
             divider()
             dropdownHeader("dropdown-header")
 
-            // see li { a }above
+            // see li { a } above
             item { link("#") { +"Separated link" } }
         }
     }

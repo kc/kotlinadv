@@ -3,7 +3,7 @@ package com.infosupport.demos.h9.generics
 // Variance: generics and subtyping
 // Use site variance
 
-// Previous in/out declarations are called declaration site variance.
+// Previous out/in declarations in classes/interfaces (i.e. Producer/Consumer) are called declaration site variance.
 // There's also use site variance
 
 // Classes like MutableList, aren’t covariant or contravariant in a general case, because they can

@@ -11,7 +11,7 @@ import kotlin.time.measureTime
 // async await many
 
 fun launchManyCoroutinesAndAwaitResult() {
-    val deferred = (1..1_000_000).map { n ->
+    val deferredInts = (1..1_000_000).map { n ->
         GlobalScope.async {
             doWork(n) // doWork is, again, declared as suspend(able)
         }
@@ -21,15 +21,16 @@ fun launchManyCoroutinesAndAwaitResult() {
     // val sum = deferred.sumOf { it.await().toLong() }
 
     runBlocking {
-        deferred.sumOf {
-            it.await().toLong()
-        }.run {
-            println("Sum: $this")
-        }
-    }
+        val sumOf = deferredInts.sumOf { it.await().toLong() }
+        println("Sum: $sumOf")
 
-    // Q: How long does this take?
-    // A: Run it. It doesn't take 1_000_000 seconds, so coroutines run concurrently.
+        // or:
+        // val sumOf = deferredInts.awaitAll().sumOf { it.toLong() }
+        // println("Sum: $sumOf")
+
+        // Q: How long does this take?
+        // A: Run it. It doesn't take 1_000_000 seconds, so coroutines run concurrently.
+    }
 }
 
 private suspend fun doWork(n: Int): Int {
