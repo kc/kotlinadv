@@ -44,7 +44,7 @@ fun dropdownExample() = createHTML().div(classes = "dropdown") {
 }
 
 // We can do better, see below. These look like custom language constructs, i.e. DSL!
-// LAB: see (...)labs.Dsl1.kt
+// LAB: see (...)labs.Dsl2.kt
 /*
 fun dropdownExampleRef() = createHTML().dropdown {
     dropdownButton { +"Dropdown" }
