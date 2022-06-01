@@ -59,7 +59,7 @@ fun testFilter() {
 fun testC() {
     println(listOf("123", "abc", "de", "f").avgLengthFor { it.all { c -> c in 'a'..'z' } } == 2.0)
     println(listOf("123", "abc", "hans@email.de", "pierre@croissant.fr").avgLengthFor { it.contains('@') } == 16.0)
-    println(listOf("123", "45678", "9", "0").avgLengthFor { it.length > 3 } == 4.0)
+    println(listOf("123", "45678", "9", "0").avgLengthFor { it.length >= 3 } == 4.0)
 }
 
 fun testD() {

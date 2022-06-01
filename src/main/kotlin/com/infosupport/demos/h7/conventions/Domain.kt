@@ -30,7 +30,7 @@ val pointMap = mutableMapOf(
 data class Rectangle(val upperLeft: Point, val lowerRight: Point)
 
 // -------------
-open class PropertyChangeAware {
+abstract class PropertyChangeAware {
     protected val changeSupport = PropertyChangeSupport(this) // java beans api
 
     fun addPropertyChangeListener(listener: PropertyChangeListener) {
