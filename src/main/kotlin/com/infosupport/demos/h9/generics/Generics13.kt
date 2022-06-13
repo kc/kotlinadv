@@ -55,6 +55,10 @@ object DefaultIntValidator : FieldValidator<Int> {
     override fun validate(input: Int) = input >= 0
 }
 
+object DefaultLongValidator : FieldValidator<Long> {
+    override fun validate(input: Long) = input >= 0
+}
+
 // Now imagine that you want to store all validators in the same container and
 // get the right validator according to the type of input.
 fun attempt1() {
@@ -67,7 +71,7 @@ fun attempt1() {
     // Int --> String :-(
 
     // Moreover, we can't use it:
-    // validators[String::class]!!.validate("") // does not compile, yields:
+//     validators[String::class]!!.validate("") // does not compile, yields:
 
     // Error: Out-projected type 'FieldValidator<*>' prohibits the use of
     // 'public abstract fun validate(input: T): Boolean
@@ -101,6 +105,13 @@ object Validators {
             ?: throw IllegalArgumentException("No validator for ${kClass.simpleName}")
 }
 
+inline fun <reified T : Any> FieldValidator<T>.register() {
+    Validators.registerValidator(T::class, this)
+}
+
+// Utility function with type inference capabilities
+inline fun <reified T : Any> getValidator() = Validators[T::class]
+
 fun attempt2() {
     // Safe, because we can only set:
     Validators.registerValidator(String::class, DefaultStringValidator)
@@ -115,7 +126,14 @@ fun attempt2() {
 
     // Impossible:
     // println(Validators[String::class].validate(42))
+
+    // With extension functions
+    DefaultLongValidator.register()
+    val validator: FieldValidator<Long> = getValidator()
+    validate(getValidator())
 }
+
+fun validate(validator: FieldValidator<Long>) {}
 
 fun main() {
     // attempt1() // may crash

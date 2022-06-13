@@ -41,6 +41,7 @@ fun filterIsInstance() {
 fun replaceClassReferenceByReifiedTypeParameters() {
     val serviceImpl = ServiceLoader.load(Service::class.java).findFirst().orElseThrow() // equivalent to Service.class in Java
     val serviceImplToo = load<Service>() // Much more concise and reusable: pass type as reified type parameter
+    val serviceImplInferred: Service = load() // Type parameter is inferred
 }
 
 inline fun <reified T> load(): T =
