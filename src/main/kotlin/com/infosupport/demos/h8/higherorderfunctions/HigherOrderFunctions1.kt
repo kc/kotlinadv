@@ -39,10 +39,27 @@ fun twoAndThree(operation: (Int, Int) -> Int) {
     println("The result is $result")
 }
 
+fun twoAndThreeCustomType(operation: IntComputation) {
+    val result = operation.compute(2, 3)
+    println("The result is $result")
+}
+
+fun interface IntComputation {
+    fun compute(a: Int, b: Int): Int
+}
+
 fun callTwoAndThree() {
     twoAndThree({ a, b -> a + b })
     twoAndThree { a, b -> a * b } // no parentheses
     twoAndThree(sum)
+
+    // Functional interface
+    val compute = IntComputation { a, b -> a + b }
+    compute.compute(2, 3)
+    twoAndThreeCustomType(compute)
+    twoAndThreeCustomType { a, b -> a + b }
+//    twoAndThree(compute) // Does not compile
+    twoAndThreeCustomType(sum) // Function type to fun interface
 }
 
 // Default and null values for parameters with function types --------

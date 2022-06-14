@@ -43,6 +43,22 @@ open class Tag(val name: String) {
     override fun toString() = """<$name>${children.joinToString("")}</$name>"""
 }
 
+// DSL marker ensures that we can only call methods from classes annotated with this marker from the direct scope.
+//
+// When in a tr { } lambda, we can only call methods defined on TR, not on TABLE even though this is in scope.
+// Therefore, this code will not compile:
+//
+// table {
+//   tr {
+//     tr { }
+//   }
+// }
+//
+// This helps structure of the code and side-effects that the user did not expect.
+@DslMarker
+annotation class HtmlDsl
+
+@HtmlDsl
 class TABLE : Tag("table") {
     fun tr(render: TR.() -> Unit) {
         // TODO show
@@ -50,6 +66,7 @@ class TABLE : Tag("table") {
     }
 }
 
+@HtmlDsl
 class TR : Tag("tr") {
     fun td(render: TD.() -> Unit) {
         // TODO show
@@ -57,5 +74,6 @@ class TR : Tag("tr") {
     }
 }
 
+@HtmlDsl
 class TD : Tag("td")
 
