@@ -16,25 +16,34 @@ import kotlin.concurrent.thread
 // It contains a number of high-level coroutine-enabled primitives that this guide covers,
 // including launch, async and others.
 
+fun main() {
+    // helloWorldConcurrentWithThread()
+
+    // firstCoroutine()
+    // sameWithRunBlocking()
+    // sameMoreIdiomatic()
+    // sameWithJoin()
+    // sameWithoutJoinMostIdiomatic()
+
+    // newNestedCoroutineScope()
+}
+
+fun helloWorldConcurrentWithThread() {
+    thread {
+        Thread.sleep(1000L) // BLOCKING (consumes resources for 1 second for nothing...)
+        log("World!")
+    }
+    log("Hello,")
+    Thread.sleep(2000L)     // BLOCKING (consumes resources for 2 seconds for nothing...)
+    println("Done")
+}
+
 fun firstCoroutine() {
     // Every coroutine needs to start in a scope, and GlobalScope is
     // a scope that will live as long as our app lives.
 
+    // Here we launch a new coroutine in the GlobalScope, so we have to manually wait until it's finished
     GlobalScope.launch {    // launch a new coroutine in background and continue
-        delay(1000L)        // NON-BLOCKING; _suspends_ coroutine and thread can continue with other work
-        log("World!")       // print after delay, NON blocking
-    }
-    log("Hello,")           // main thread continues while coroutine is delayed
-    Thread.sleep(2000L)     // BLOCKING, _blocks_ thread, keep GlobalScope alive (what happens if we lower this value?)
-    println("Done")
-}
-
-// We can do the same with threads:
-
-fun sameWithThread() {
-    thread {
-        // delay(1000L) // not allowed in thread
-
         /*
             Suspend function 'delay' should be called only from a coroutine or another suspend function
             That is because delay is a special suspending function that does not block a thread,
@@ -46,12 +55,11 @@ fun sameWithThread() {
             will continue, but if we want for the whole construction site to stop working we would use Thread.sleep()
         */
 
-        // instead use:
-        Thread.sleep(1000L) // BLOCKING (consumes resources for 1 second for nothing...)
-        log("World!")
+        delay(1000L)        // NON-BLOCKING; _suspends_ coroutine and thread can continue with other work
+        log("World!")       // print after delay, NON blocking
     }
-    log("Hello,")
-    Thread.sleep(2000L)     // BLOCKING
+    log("Hello,")           // main thread continues while coroutine is delayed
+    Thread.sleep(2000L)     // BLOCKING, _blocks_ thread, keep GlobalScope alive (what happens if we lower this value?)
     println("Done")
 }
 
@@ -67,38 +75,40 @@ fun sameWithRunBlocking() {
     println("Done")
 }
 
-fun sameButMoreIdiomatic() {
-    runBlocking {            // start main coroutine
-        GlobalScope.launch { // launch a new coroutine in background and continue
+fun sameMoreIdiomatic() {
+    runBlocking {   // start a "main coroutine"
+        GlobalScope.launch {    // launch a new coroutine in the current scope (not GlobalScope) in the background and continue
             delay(1000L)
             log("World!")
-        }
-        log("Hello,")       // main coroutine continues here immediately
-        delay(2000L)
+        }  // launch
+        log("Hello,") // main coroutine continues here immediately
+        delay(2000L)  // is this still needed?
     } // blocks until all coroutines finish
     println("Done")
 }
 
-fun sameButWithJoin() {
+fun sameWithJoin() {
     runBlocking {
         // A coroutine runs in a background job.
         // Conceptually, a job is a cancellable thing with a life-cycle that culminates in its completion.
         // See https://www.raywenderlich.com/books/kotlin-coroutines-by-tutorials/v2.0/chapters/3-getting-started-with-coroutines#toc-chapter-007-anchor-004
-        val coroutine = GlobalScope.launch {
+
+        // Here we launch a new coroutine in the GlobalScope, so we have to manually wait until it's finished
+        val job = GlobalScope.launch {
             delay(1000L)
             log("World!")
         }
         println("Hello,")
-        coroutine.join() // no delay anymore, wait here for job to finish
+        job.join() // no delay anymore, wait here for job to finish
     }
     println("Done") // immediately when job is done
 }
 
-fun sameButWithNestedCoroutineScope() {
+fun sameWithoutJoinMostIdiomatic() {
     // outer coroutine
     runBlocking {
-        // inner coroutine
-        val job = this.launch { // NOTE: this.launch
+        // inner coroutine on same scope as outer
+        launch { // NOTE: this.launch
             delay(1000L)
             log("World!")
         }
@@ -106,15 +116,16 @@ fun sameButWithNestedCoroutineScope() {
         // NOTE: job.join() not needed, because an outer coroutine (runBlocking) does
         // not complete until all the coroutines launched in its scope (job) complete.
     }
-    println("Done") // immediately when job and so runblocking are done
+    println("Done") // immediately when job and so runBlocking are done
 }
 
-fun newCoroutineScope() {
+fun newNestedCoroutineScope() {
     runBlocking {
-        println("Begin")
+        log("begin runBlocking")
 
-        coroutineScope { // this: CoroutineScope
-            // Concurrently executes both sections
+        // create a new nested scope, as child of runBlocking
+        coroutineScope {
+            // Concurrently executes both sections in this scope
             launch {
                 delay(200L)
                 println("World 2")
@@ -126,17 +137,8 @@ fun newCoroutineScope() {
             println("Hello")
             // completes only after both sections are complete
         }
-        println("Done")
+        log("end runBlocking")
     }
-    log("runBlocking is over")
+    log("Done")
 }
 
-fun main() {
-    // firstCoroutine()
-    // sameWithThread()
-    // sameWithRunBlocking()
-    // sameButMoreIdiomatic()
-    // sameButWithJoin()
-    // sameButWithNestedCoroutineScope()
-    // newCoroutineScope()
-}
