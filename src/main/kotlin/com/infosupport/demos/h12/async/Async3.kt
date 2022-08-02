@@ -6,7 +6,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
 // Coroutines
-// suspend and resume, async await
+// suspend/resume, async/await
 
 // Let's look at the definition of delay:
 // public suspend fun delay(timeMillis: Long)
@@ -122,24 +122,24 @@ fun networkCallsConcurrentlyWithAsync() {
 }
 
 // check the keyword suspend
-suspend fun getDocument(id: Int): String {
+private suspend fun getDocument(id: Int): String {
     delay(10L) // suspend this coroutine, giving way to other coroutines on the thread
     return "{id: $id,  name: '${people[id].name}'}"
 }
 
-suspend fun doNetworkCall(json: String = "{}"): String {
+private suspend fun doNetworkCall(json: String = "{}"): String {
     printheader(::doNetworkCall)
     delay(200L)
     return "the answer to $json is: 42"
 }
 
-suspend fun doNetworkCall2(json: String = "{}"): String {
+private suspend fun doNetworkCall2(json: String = "{}"): String {
     printheader(::doNetworkCall2)
     delay(100L)
     return "the answer to $json is: 1337"
 }
 
-@ExperimentalTime // needed for built in function measureTime
+@ExperimentalTime // needed for built-in function measureTime
 fun main() {
     println(measureTime { networkCallsSequential() })
     // println(measureTime { networkCallsSequentialWithCancel() })

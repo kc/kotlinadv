@@ -18,18 +18,17 @@ suspend fun printNamesAsync(persons: List<Person>) =
         .map { getNameFromDbAsync(it) }
         .forEach { println("Got person's name: ${it.await()}") }
 
-suspend fun getNameFromDbAsync(p: Person): Deferred<String> {
+suspend fun getNameFromDbAsync(p: Person): Deferred<String> = coroutineScope {
     println("getNameAsync for $p")
-    val deferredName = GlobalScope.async {
+    val deferredName = async {
         val ms = rand(4000)
         delay(ms)
         log(p, ms)
         p.name
     }
     println("getNameFromDbAsync request fired for $p; waiting for response....")
-    return deferredName
+    deferredName
 }
 
 private fun log(p: Person, ms: Long) = println("getting ${p.name} took $ms ms.")
 
-private fun rand(max: Long) = (Math.random() * max).toLong()

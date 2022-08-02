@@ -1,38 +1,34 @@
 package com.infosupport.demos.h12.async.channels
 
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun main() {
-    runBlocking {
+fun main() = runBlocking<Unit> {
+    val channel = Channel<String>()
 
-        val channel = Channel<Int>() // like a stream or an Observable
+    // coroutine A sends two messages on the channel:
+    launch {
+        channel.send("A1")
+        channel.send("A2")
+        log("A done")
+    }
 
-        launch {
-            for (i in 1..20) {
-                println("sending $i")
-                channel.send(i) // can suspend
-            }
-            channel.close() // to terminate the receiver
-        }
+    // coroutine B sends one messages on the channel:
+    launch {
+        channel.send("B1")
+        log("B done")
+    }
 
-        coroutineScope {
-            launch {
-                receive(channel, "A")
-            }
-
-            launch {
-                receive(channel, "B")
-            }
+    // coroutine C receives the messages
+    launch {
+        repeat(3) {
+            val x = channel.receive()
+            log("C receives" + x)
         }
     }
 }
 
-private suspend fun receive(channel: Channel<Int>, id: String) {
-    for (i in channel) { // can suspend
-        println("$id processed $i")
-    }
-    println("channel closed for $id")
+fun log(message: Any?) {
+    println("[${Thread.currentThread().name}] $message")
 }

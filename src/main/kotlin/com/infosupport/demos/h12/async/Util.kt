@@ -31,3 +31,5 @@ fun Double.round(decimals: Int): Double {
 fun printheader(title: KFunction<*>) {
     println("----------------- $title -----------------")
 }
+
+fun rand(max: Long) = (Math.random() * max).toLong()
