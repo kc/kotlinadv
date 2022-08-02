@@ -11,15 +11,19 @@ import kotlin.reflect.KParameter
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.javaType
 
-// Reflection: introspecting Kotlin objects at runtime
-// How to use?
+// Reflection
+// - JSON parsing and object deserialization
+
 
 // Now, we're studying the implementation of deserialize<Type>(json).
 // Example call:
-val json = """{"title": "Catch-22", "author": {"name": "J. Heller", "age": 42}}"""
-val b = deserialize<Book>(json)
+fun main() {
+    val json = """{"title": "Catch-22", "author": {"name": "J. Heller", "age": 42}}"""
+    val b = deserialize<Book>(json)
+    println(b)
+}
 
-// How to define and implement?
+// How to define and implement this?
 // Input is: reified type param T, string
 // Output is: an instance of T
 inline fun <reified T : Any> deserialize(json: String): T {

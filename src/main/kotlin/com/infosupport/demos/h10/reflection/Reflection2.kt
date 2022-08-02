@@ -5,24 +5,33 @@ import java.time.LocalDate
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-// Reflection: introspecting Kotlin objects at runtime
-// How to use?
-// To explore this, we're implementing JKid now.
+// Reflection
+// - implementing object serialization using reflection
+// - customising serialization with annotations
+
+// How to use the reflection API?
+// To explore this, we're implementing JKid as a case study.
+// We start with serialize(..).
+// Note: given are some utils, see Util.kt!
+
+// Notes to instructor:
+//  - this source can be used as explanation or lab
+//  - solution can be found in the solutions package
 
 fun main() {
-    println(serialize(Person("Bram", 41, 42, birthDate = LocalDate.of(1979, 8, 22))))
-    // should output:
-    // {"leeftijd": 41, "birthDate": "22-augustus-1979", "name": "Bram", "shoeSize": 42}
+    println(serialize(Person("Bram", 43, 183, hasLicense = true, birthDate = LocalDate.of(1979, 8, 22))))
+    // should output (basic):
+    // {"birthDate": 1979-08-22, "hasLicense": true, "height": 183, "name": "Bram", "shoeSize": 43}
 }
 
-// 1. First the basic serialization with serialize(object). See Annotations2.jkidDemo
+// 1. First the basic serialization with serialize(obj).
 // How to build this?
 // Well, object in, string out, so we start with:
-fun serialize(obj: Any): String = buildString { serializeObject(obj) }
-// (recall buildString from ch5)
+fun serialize(obj: Any): String = buildString { serializeObject(obj) } // (recall buildString from ch5)
 
 // How to build serializeObject?
 fun StringBuilder.serializeObject(obj: Any) {
+    TODO()
     // a. read properties of obj
 
     // b. for each property:
@@ -30,17 +39,17 @@ fun StringBuilder.serializeObject(obj: Any) {
     // - append :         to stringbuilder
     // - append propvalue to stringbuilder
 
-    // c. separate each [key: value] with comma and surround the whole result with { .. }
-    // Hint: use Collections.joinTo(...){..} and the functions in Util.kt
+    // c. separate them with a comma and surround the result with { .. }
+    // Hint: use .joinTo(...){..} and the functions in Util.kt
 }
 
-// 2. Now, how to implement support for @JsonExclude?
+// 2. Now, how to implement support for @JsonExclude? TODO()
 
-// 3. Now, how to implement support for @JsonName?
+// 3. Now, how to implement support for @JsonName? TODO()
 //    When serializing the property's name, we have to see if
 //    it's annotated with @JsonName first. If so, use the alias.
 
-// 4. Now, how to implement support for @CustomSerializer?
+// 4. Now, how to implement support for @CustomSerializer? TODO()
 //    We have to change the call to serializePropertyValue(prop.get(obj))
 //    We don't just serialize, but try to find the serializer and if available, use that one:
 //     val value = prop.get(obj)

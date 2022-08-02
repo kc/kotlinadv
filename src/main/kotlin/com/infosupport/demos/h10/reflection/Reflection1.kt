@@ -14,32 +14,34 @@ fun main() {
 
 fun apiDemo() {
     val person = Person("Alice", 29, 42, birthDate = LocalDate.of(1970, 1, 1))
-    val kClass = getKClass(person)
 
+    val kClass = getKClass(person)
     getProperties(kClass)
     callGetters(kClass, person)
     callMethod(person)
     listParametersOfSetters(kClass)
 }
 
-// 1. KClass -|> KAnnotatedElement
+// 1. KClass : KAnnotatedElement
 private fun getKClass(person: Person): KClass<Person> {
     println(" -------- getKClass -------- ")
-    val kClass = person.javaClass.kotlin
+    val jClass = person.javaClass // Java's   reflection API
+    val kClass = jClass.kotlin    // Kotlin's reflection API
+
     println(kClass.simpleName)
     return kClass
 }
 
-// 2. KProperty -|> KCallable -|> KAnnotatedElement
+// 2. KProperty : KCallable : KAnnotatedElement
 private fun getProperties(kClass: KClass<Person>) {
     println(" -------- getProperties -------- ")
-    val memberProperties = kClass.memberProperties // gets all member props, not extension props
+    val memberProperties = kClass.memberProperties // gets only member props, not extension props
 
-    //                         check this type: KProperty1<..> -|> KProperty
+    //                         check this type: KProperty1<..> : KProperty
     memberProperties.forEach { prop: KProperty1<Person, *> -> println(prop.name) }
 }
 
-// 3a. KFunction -|> KCallable -|> KAnnotatedElement
+// 3a. KFunction : KCallable : KAnnotatedElement
 private fun callGetters(kClass: KClass<Person>, p: Person) {
     println(" -------- callGetters -------- ")
     kClass.memberProperties.forEach {
@@ -49,13 +51,13 @@ private fun callGetters(kClass: KClass<Person>, p: Person) {
     }
 }
 
-// 3b. KFunction1 -|> KFunction
+// 3b. KFunction1 : KFunction
 private fun callMethod(person: Person) {
     println(" -------- callMethod -------- ")
-    // A method is a KFunction too and here, incAge is a KFunction1: it has one argument.
-    val kFunction1: KFunction1<Int, Unit> = person::incAge
+    // A method is a KFunction too and here, incHeight is a KFunction1: it has one argument.
+    val kFunction1: KFunction1<Int, Unit> = person::incHeight
     kFunction1.invoke(3) // invoke instead of call
-    println(person.age)
+    println(person.height)
 
     // TODO tell:
     // Q: Where's the source of KFunctionN?
@@ -66,7 +68,7 @@ private fun callMethod(person: Person) {
     // .. :-)
 }
 
-// 4. KParameter -|> KAnnotatedElement
+// 4. KParameter : KAnnotatedElement
 fun listParametersOfSetters(kClass: KClass<Person>) {
     println(" -------- listParametersOfSetters -------- ")
     kClass.memberProperties.asSequence()

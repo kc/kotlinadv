@@ -1,10 +1,7 @@
-package com.infosupport.demos.h10.reflection.sol
+package com.infosupport.solutions.h10
 
 import com.infosupport.demos.h10.reflection.Person
-import com.infosupport.demos.h10.reflection.serializePropertyValue
-import com.infosupport.demos.h10.reflection.serializeString
 import ru.yole.jkid.CustomSerializer
-import ru.yole.jkid.JsonExclude
 import ru.yole.jkid.JsonName
 import ru.yole.jkid.ValueSerializer
 import java.time.LocalDate
@@ -15,13 +12,14 @@ import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 
 fun main() {
-    println(serialize(Person("Bram", 41, 42, birthDate = LocalDate.of(1979, 8, 22))))
+    println(serialize(Person("Bram", 43, 183, hasLicense = true, birthDate = LocalDate.of(1979, 8, 22))))
 }
 
 fun serialize(obj: Any): String = buildString { serializeObject(obj) }
 
 // 1.
 fun StringBuilder.serializeObject(obj: Any) {
+    val sb = this
     // a. read properties of obj
     val memberProperties = obj.javaClass.kotlin.memberProperties
 
@@ -29,23 +27,25 @@ fun StringBuilder.serializeObject(obj: Any) {
     // Hint: use Collections.joinTo(...){..} and the functions in Util.kt
 
     memberProperties
-        // 2.
+        /* 2. Now, how to implement support for @JsonExclude? Easy, add:
         .filter { it.findAnnotation<JsonExclude>() == null }
-        .joinTo(this, ", ", "{", "}") {
+        */
+        .joinTo(sb, ", ", "{", "}") {
             // b. for each property:
             // 1.
-            // serializePropertyNoSupportForJsonAnnotations(it, obj)
-
-            // 3. and 4.:
             serializeProperty(it, obj)
+
+            // OR
+            // 3. and 4.:
+            // serializePropertyWithSupportForJsonAnnotations(it, obj)
             ""
         }
 
 }
 
-private fun StringBuilder.serializePropertyNoSupportForJsonAnnotations(it: KProperty1<Any, *>, obj: Any) {
+private fun StringBuilder.serializeProperty(it: KProperty1<Any, *>, obj: Any) {
     // - append prop.name to stringbuilder
-    serializeString(it.name)
+    serializeAndEscape(it.name)
 
     // - append :         to stringbuilder
     append(": ")
@@ -54,18 +54,14 @@ private fun StringBuilder.serializePropertyNoSupportForJsonAnnotations(it: KProp
     serializePropertyValue(it.get(obj))
 }
 
-// 2. Now, how to implement support for @JsonExclude?
-// easy, add to collection:
-// .filter { it.findAnnotation<JsonExclude>() == null }
-
 // 3. Now, how to implement support for @JsonName?
 
-private fun StringBuilder.serializeProperty(prop: KProperty1<Any, *>, obj: Any) {
+private fun StringBuilder.serializePropertyWithSupportForJsonAnnotations(prop: KProperty1<Any, *>, obj: Any) {
     // - append prop.name to stringbuilder
     // 3.
     val jsonNameAnn = prop.findAnnotation<JsonName>()
     val propName = jsonNameAnn?.name ?: prop.name // if it has an alias, use it
-    serializeString(propName)
+    serializeAndEscape(propName)
 
     // - append :         to stringbuilder
     append(": ")

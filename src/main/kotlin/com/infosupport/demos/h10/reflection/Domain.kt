@@ -9,22 +9,22 @@ import java.time.LocalDate
 import kotlin.reflect.KParameter
 
 class Person(
-    val name: String,                             // regular prop
-    @JsonName("leeftijd") var age: Int,           // prop with alias in json
-    shoeSize: Int,                                // prop with custom setter
-    @JsonExclude val hasLicense: Boolean = false, // prop excluded from json
-    @CustomSerializer(DateSerializer::class)
-    val birthDate: LocalDate                      // prop with custom serializer
+    val name: String,                                                 // regular prop
+    _shoeSize: Int,                                                   // field with custom setter
+
+    @JsonName("lengte") var height: Int,                              // prop with alias in json
+    @JsonExclude val hasLicense: Boolean = false,                     // prop excluded from json
+    @CustomSerializer(DateSerializer::class) val birthDate: LocalDate // prop with custom serializer
 ) {
 
-    var shoeSize: Int = shoeSize                  // custom setter
-        set(newSize: Int) {
+    var shoeSize: Int = _shoeSize                  // custom setter
+        set(newSize) {
             require(newSize > 0)
             field = newSize
         }
 
-    fun incAge(i: Int) {                         // regular method
-        age += i
+    fun incHeight(i: Int) {                       // regular method
+        height += i
     }
 
 }

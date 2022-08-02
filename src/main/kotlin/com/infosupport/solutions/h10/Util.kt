@@ -1,4 +1,4 @@
-package com.infosupport.demos.h10.reflection
+package com.infosupport.solutions.h10
 
 import ru.yole.jkid.joinToStringBuilder
 import java.time.LocalDate
@@ -35,3 +35,4 @@ fun StringBuilder.serializeList(data: List<Any?>) {
         serializePropertyValue(it)
     }
 }
+
