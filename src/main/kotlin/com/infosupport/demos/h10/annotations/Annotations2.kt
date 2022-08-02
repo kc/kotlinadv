@@ -6,10 +6,12 @@ import ru.yole.jkid.deserialization.deserialize
 import ru.yole.jkid.serialization.serialize
 
 // Declaring and applying annotations
+// - Using annotations to customize JSON serialization
+// - Declaring annotations, meta annotations
 
-// Using annotations to customize JSON serialization -------------------------------------------
-
+// 1. Using annotations to customize JSON serialization ------------------------------------------
 fun main() {
+    // Nothing fancy here, just a demo of a usage of annotations and an intro for the next source.
     jkidDemo()
 }
 
@@ -23,12 +25,14 @@ fun jkidDemo() {
 }
 
 data class Person(
-    @JsonName("alias") val firstName: String, // TODO show source of JsonName (in github clone of jkid)
-    @JsonExclude val age: Int? = null         // TODO show source of JsonExclude
+    @JsonName("alias") val firstName: String,
+    @JsonExclude val age: Int? = null
 )
 
+// 2. Declaring annotations, meta annotations -----------------
+// TODO show source of JsonName and JsonExclude (see https://github.com/yole/jkid/blob/60ec0e3284acc2d5d90e0f62aa5ec1c9efcf762d/src/main/kotlin/Annotations.kt)
+// nothing fancy, just like we're used from Java
+
 // TODO tell:
-// Annotations have meta annotations as in Java, e.g. @Target.
-// However, Kotlin's Retention's default is RUNTIME! :-)
-
-
+// - Annotations have meta annotations as in Java, e.g. @Target.
+// - However, Kotlin's Retention's default is RUNTIME! :-)
